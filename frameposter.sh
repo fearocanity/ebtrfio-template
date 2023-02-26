@@ -113,7 +113,7 @@ nth(){
 
 	# This code below is standard, without tweaks. uncomment if the subtitles we're synced.
 	sec="$(bc -l <<< "scale=11; ${vid_totalfrm} / ${total_frame}")"
-	sec="$(bc -l <<< "scale=2; (${t:-1} - ${frm_delay}) * (${vid_totalfrm} / ${total_frame}) / ${vid_fps}")" secfloat="${sec#*.}" sec="${sec%.*}" sec="${sec:-0}"
+	sec="$(bc -l <<< "scale=2; (${t:-1} - ${frm_delay}) * ${sec} / ${vid_fps}")" secfloat="${sec#*.}" sec="${sec%.*}" sec="${sec:-0}"
 
 	[[ "${secfloat}" =~ ^0[8-9]$ ]] && secfloat="${secfloat#0}"
 	secfloat="${secfloat:-0}"
