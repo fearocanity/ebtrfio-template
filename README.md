@@ -1,5 +1,5 @@
-# Every ◯◯ Frame in Order BOT
-This is where we run our BOT.
+<h1 align="center">Every <sup><sub><sub>(name)</sub></sub></sup> Frame in Order BOT</h1>
+<p align="center">This is where we run our BOT.</p>
 
 # Table of Contents
 - [Tutorial](#tutorial)
@@ -13,53 +13,35 @@ This is where we run our BOT.
 
 ## Tutorial
 This section tells how to make it work. In more detailed way.
+
+> Grammatical Errors ahead, we're not native english speaker so please bear with us.
+
 ### Setup Facebook Token
   <details>
-  <summary>Click Here to Show</summary>
+  <summary>Click Here to Show</summary><p>
   
   To set up a Facebook long-lived access token, follow these steps:
-   - Click `My Apps`
-   
+   - Click `My Apps`<p>
    ![Screenshot](https://user-images.githubusercontent.com/91414643/221354558-e2f22a89-33d6-4edb-9218-fb96aae7a9af.png)
-   
-   - Click `Create App`
-    
+   - Click `Create App`<p>
    ![Screenshot](https://user-images.githubusercontent.com/91414643/221354832-0649cfaa-2414-4530-ab5c-b0b8b732a9be.png)
-
-   - Click `Business` and `Next`
-
+   - Click `Business` and `Next`<sup><sub>(Business has more perks, than others so pick it)</sub></sup><p>
    ![image](https://user-images.githubusercontent.com/91414643/221354888-f7abb53d-7c88-4116-b89f-bda5e07e71bd.png)
-
-  - This is very Self Explanatory, I Guess you already know what to do.
-   
+  - This is very Self Explanatory, I Guess you already know what to do.<p>
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221354981-deb1fb14-1d64-45fa-aa91-e9b2797fe06f.png)
-
-  - Hover Through `tools` and Click `Graph Api Explorer`
-
+  - Hover through `tools` and Click `Graph Api Explorer`<p>
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221355248-9e7de41c-a9c9-46d6-9b51-b4a084c3bddc.png)
-
-  - Click on `User Token` and choose the page you want.
-
+  - Click on `User Token` and choose the page you want.<p>
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221355474-107eaf3b-c9f7-4179-81cf-4cb4b58f396d.png)
-
   - Theres gonna popup there, just give the App Permissions and Authorize it.
-
-  - Now Click `Generate Access Token` then Copy the Short-Lived-Token
-  
+  - Now Click `Generate Access Token` then copy the Short-Lived-Token<p>
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221355673-131f9bed-9828-4750-9366-2958e378bd37.png)
-
-  - Go back to `Dashboard` Again. Then Hover through `tools` and click `Access Token Debugger`
-
+  - Go back to `Dashboard` Again. Then Hover through `tools` and click `Access Token Debugger`<p>
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221399431-f14c716f-c417-4c17-8cca-d6f8244caa19.png)
-
-
-  - Insert the Token you copied earlier and Click `Extend...`
-  
+  - Insert the Token you copied earlier and Click `Extend...`<p>
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221356061-137ea679-5df4-4b89-aa18-0f734438d402.png)
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221356085-523a326a-8c01-4124-9101-408f9bcc2dfa.png)
-
-  - Now Copy it and Save it Somewhere
-
+  - Now Copy it and Save it Somewhere<p>
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221356335-470d5ab6-5d28-44fa-92fc-eb6ccddce722.png)
   
   </details>
@@ -68,7 +50,7 @@ This section tells how to make it work. In more detailed way.
 
   ### Setup the Frames
   <details>
-  <summary>Click Here to Show</summary>
+  <summary>Click Here to Show</summary><p>
   
   First, You need the Frames first, you would need a Windows Powershell to use program called `FFMPEG`
 
@@ -77,11 +59,11 @@ This section tells how to make it work. In more detailed way.
   - Click `Windows Button`
   - And Search for `Windows Powershell` then Right-Click and click `Run as Administrator` 
   
-  After you open it, Run this command:
+  After you open it, Run this command:<p>
   ```
   iwr -useb get.scoop.sh | iex
   ```
-  > **Note**: If theres an error occured, just run the command below (Disregard the command below if theres no error appeared)
+  > **Note**: If theres an error occured, just run the command below. <sup>(Disregard the command below if theres no error appeared)</sup>
   > ```
   > Set-ExecutionPolicy RemoteSigned -scope CurrentUser
   > ```
@@ -105,7 +87,7 @@ This section tells how to make it work. In more detailed way.
   ffmpeg -i "video.mkv" -r 2 -q:v 3 frame_%00d.jpg
   ```
   - `-i "video.mkv"` input file
-  - `-r 2` is the frames per second
+  - `-r 2` is the frames chopped per second <sup>(needed in `config.conf`)</sup>
   - `-q:v 3` quality
   - `frame_%00d.jpg` output file
   
@@ -115,7 +97,7 @@ This section tells how to make it work. In more detailed way.
   ```
   ffprobe -v error -select_streams v:0 -count_packets -show_entries stream=nb_read_packets -of csv=p=0 video.mkv
   ```
-  To get the frame rate of the video  (If you get fractions "24/1" omit "/1")
+  To get the frame rate of the video  <sup>(If you get fractions "24/1" omit "/1")</sup>
   ```
   ffprobe -v error -select_streams v:0 -show_entries stream=r_frame_rate -of default=noprint_wrappers=1:nokey=1 video.mkv
   ```
@@ -157,31 +139,28 @@ This section tells how to make it work. In more detailed way.
   ### Setup your BOT
   
   <details>
-  <summary>Click Here to Show</summary>
+  <summary>Click Here to Show</summary><p>
   
-  - Add subtitle file (only supported **\*.ass** subtitle)
+  - Add subtitle file <sup>(only supported **\*.ass** subtitle)</sup>
   - Insert all the infos needed in `config.conf` file.
-  ![image](https://user-images.githubusercontent.com/91414643/221393080-91011934-63d2-41f0-98ee-0e71ffec2eda.png)
+  https://github.com/fearocanity/ebtrfio-template/blob/97359191bdd5665657420b278343c04096afd76e/config.conf#L4-L9
+  https://github.com/fearocanity/ebtrfio-template/blob/97359191bdd5665657420b278343c04096afd76e/config.conf#L12
+  https://github.com/fearocanity/ebtrfio-template/blob/97359191bdd5665657420b278343c04096afd76e/config.conf#L23
   - And push it to master.
   
   We need to setup our repo secret variables too...
   
-  - To setup it, first go to `Settings` on your GitHub Repo.
-  
+  - To setup it, first go to `Settings` on your GitHub Repo.<p>
   ![image](https://user-images.githubusercontent.com/91414643/221394421-9863b584-2a31-4faf-a7c0-a4913d68db52.png)
-  - Under the `Secrets and Variables` section, Click `Actions`
-  
+  - Under the `Secrets and Variables` section, Click `Actions`<p>
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221394588-b88183ce-de54-461e-bc49-031891e5f84c.png)
-  - Then click `New Repository Secret`
-  ![Screenshot 2023-02-26 135209](https://user-images.githubusercontent.com/91414643/221394694-c07449b0-c76e-44e1-94c0-fc3043090640.png)
+  - Then click `New Repository Secret`<p>
+  ![Screenshot](https://user-images.githubusercontent.com/91414643/221394694-c07449b0-c76e-44e1-94c0-fc3043090640.png)
   
-  - The name must be `TOK_FB`, And Paste your Long-Live Facebook you save earlier, Then click `Add Secret`.
-  - (Optional) You can add the GIF token too by creating again, and it is named `TOK_GIF`
-
-  > Your tokens are secured by GitHub, See Documentation: [Here](https://docs.github.com/en/actions/security-guides/encrypted-secrets)
-  
+  - The name must be `TOK_FB`, And Paste your Long-Live Facebook you save earlier, Then click `Add Secret`.<p>
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221394973-d17f410b-f12a-47c4-bde2-6cb62f002f15.png)
-
+    - (Optional) You can add the GIF token too by creating again, and it is named `TOK_GIF`<p>
+    
   - Then you're good to go for a test now.
   </details>
   
@@ -189,17 +168,14 @@ This section tells how to make it work. In more detailed way.
   
   ### How to Run the Bot Manually
   <details>
-  <summary>Click Here to Show</summary>
+  <summary>Click Here to Show</summary><p>
   
-  - Click on `Actions`
-  
+  - Click on `Actions`<p>
   ![image](https://user-images.githubusercontent.com/91414643/221397334-bc392a43-4957-48d7-b001-abb1f9e0ba36.png)
-  
-  - Click on `init banner`, And click `Run Workflow`
-  
+  - Click on `init banner`, And click `Run Workflow`<p>
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221397447-13ec2f97-6830-4600-87a1-390f7f473d5b.png)
   
-   > **Warning**: I prefer not doing this (The BOT is already running), because it will cause to run the workflow twice when the automatic run was executed. it'll cause duplication. Instead do [Manually Disable Workflow](#how-to-manually-disable-the-posting)
+   > **Warning**: We prefer not doing this <sup>(The BOT is already running)</sup>, because it will cause to run the workflow twice when the automatic run was executed. it'll cause duplication. Instead do [Manually Disable Workflow](#how-to-manually-disable-the-posting)
 
   </details>
   
@@ -207,23 +183,21 @@ This section tells how to make it work. In more detailed way.
   
   ### How to Manually Disable the Posting
   <details>
-  <summary>Click Here to Show</summary>
+  <summary>Click Here to Show</summary><p>
   
-  - Click on `Actions`
-  
+  - Click on `Actions`<p>
   ![image](https://user-images.githubusercontent.com/91414643/221397334-bc392a43-4957-48d7-b001-abb1f9e0ba36.png)
-  
-  - Click on `init banner`, and click the three dots `···`. Then finally, click on `Disable Workflow`
-  
+  - Click on `init banner`, and click the three dots `···`. Then finally, click on `Disable Workflow`<p>
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221398101-a13b6416-dbb9-4cfa-bb34-3a95b330f210.png)
     
-  > **Note**: In enabling its pretty much the same procedure, It will appear the enable button at the top.
+  > **Note**: Enabling it pretty much the same procedure, It will appear the enable button at the top.
   </details>
 
   ## Notes and Tips
-  - In Default, the bot will automatically run every 2 hrs (This is my Standard Interval posting)
-  - When proceeding to a new Episode, you should create a Pull Request to your repo and change `frameiterator` back to `0`, and manually editing the `config.conf` to change all the infos there.
-  - You need to 
-  
+  - In Default, the bot will automatically run every 2 hrs. <sup>(This is our Standard Interval posting)</sup>
+  - When proceeding to a new Episode, you should create a Pull Request to your repo. <sup>(Don't forget `frameiterator` to change back to `0`)</sup>
+  - Recommended source: `Erai-Raws`, `Nyaa`.
+  - If you need help, just message us on our [<sub><img src="https://camo.githubusercontent.com/8f245234577766478eaf3ee72b0615e99bb9ef3eaa56e1c37f75692811181d5c/68747470733a2f2f6564656e742e6769746875622e696f2f537570657254696e7949636f6e732f696d616765732f7376672f66616365626f6f6b2e737667" height="20"></sub> Facebook](https://facebook.com/btrframes) page. Or create an Issue/Discussion thread here.
+  > **Warning**: We're not responsible whatever happens to your Facebook account. Just to be safe, i prefer using an dedicated account for the page, else you can use your main but use it with care. *Use at your own risk*
 ## Status
 ![Status Image](status/status.jpg)
