@@ -1,0 +1,24 @@
+name: "init banner"
+on:
+   workflow_dispatch:
+   schedule:
+     # You can change this CRON syntax to customize execute interval
+     - cron: "0 */2 * * *"
+
+jobs:
+ inits:
+    runs-on: ubuntu-latest    
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: execute
+        run: bash img_process.sh "in_progress"
+        
+      - name: commit banner
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "stat: Processing..."
+          repository: .
+          file_pattern: status/*.jpg
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

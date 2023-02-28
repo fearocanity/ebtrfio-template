@@ -1,0 +1,16 @@
+on:
+  push:
+  pull_request:
+
+name: 'Syantax Checker'
+
+jobs:
+  shellcheck:
+    name: Shellcheck
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run ShellCheck
+      uses: ludeeus/action-shellcheck@master
+      env:
+        SHELLCHECK_OPTS: -s bash -o all -e SC1091 -e SC2046 -e SC2154 -e SC2312 -e SC2034 -e SC2249

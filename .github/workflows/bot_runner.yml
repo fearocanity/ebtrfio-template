@@ -1,0 +1,41 @@
+name: "Sample Bot"
+on:
+  workflow_run:
+    workflows: [init banner]
+    types:
+       - completed
+
+jobs:
+  pre_job:
+    runs-on: ubuntu-latest
+    outputs:
+      should_skip: ${{ steps.skip_check.outputs.should_skip }}
+    steps:
+      - id: skip_check
+        uses: fkirc/skip-duplicate-actions@v5
+        with:
+          concurrent_skipping: 'same_content_newer'
+          skip_after_successful_duplicate: 'true'
+          do_not_skip: '["pull_request", "schedule"]'
+
+  sample-bot:
+    needs: pre_job
+    if: needs.pre_job.outputs.should_skip != 'true'
+    runs-on: ubuntu-latest    
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run
+        continue-on-error: true
+        env:
+            tok_fb: ${{ secrets.TOK_FB }}
+            tok_gif: ${{ secrets.TOK_GIF }}
+        run: bash frame_main.sh "${tok_fb}" "${tok_gif}"
+        
+      - name: Auto Commit
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "stat: Posted!!"
+          repository: .
+          file_pattern: README.md fb/* frameposter.sh frame_main.sh status/* 
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
