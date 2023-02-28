@@ -33,12 +33,12 @@ This section tells how to make it work. In more detailed way.
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221355248-9e7de41c-a9c9-46d6-9b51-b4a084c3bddc.png)
   - Click on `User Token` and choose the page you want.<p>
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221355474-107eaf3b-c9f7-4179-81cf-4cb4b58f396d.png)
-  - Theres gonna popup there, just give the App Permissions and Authorize it.
+  - There's gonna popup there, just give the App Permissions and Authorize it.
   - Now Click `Generate Access Token` then copy the Short-Lived-Token<p>
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221355673-131f9bed-9828-4750-9366-2958e378bd37.png)
-  - Go back to `Dashboard` Again. Then Hover through `tools` and click `Access Token Debugger`<p>
+  - Go back to `Dashboard` Again. Then hover through `tools` and click `Access Token Debugger`<p>
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221399431-f14c716f-c417-4c17-8cca-d6f8244caa19.png)
-  - Insert the Token you copied earlier and Click `Extend...`<p>
+  - Insert the Token you copied earlier and Click `Extend Access Token`<p>
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221356061-137ea679-5df4-4b89-aa18-0f734438d402.png)
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221356085-523a326a-8c01-4124-9101-408f9bcc2dfa.png)
   - Now Copy it and Save it Somewhere<p>
@@ -52,9 +52,9 @@ This section tells how to make it work. In more detailed way.
   <details>
   <summary>Click Here to Show</summary><p>
   
-  First, You need the Frames first, you would need a Windows Powershell to use program called `FFMPEG`
+  You need to use Windows Powershell to use program called `FFMPEG`
 
-  We need to install Scoop First, to install `FFMPEG`<p>
+  We need to install Scoop First, before installing `FFMPEG`<p>
   To open `Windows Powershell`:
   - Click `Windows Button`
   - And Search for `Windows Powershell` then Right-Click and click `Run as Administrator` 
@@ -68,7 +68,7 @@ This section tells how to make it work. In more detailed way.
   > Set-ExecutionPolicy RemoteSigned -scope CurrentUser
   > ```
 
-  Now Run this command, to install `FFMPEG`:
+  Now Run this command, to install `FFMPEG` and `GIT`:
   ```
   scoop install ffmpeg git
   ```
@@ -93,7 +93,7 @@ This section tells how to make it work. In more detailed way.
   
   Wait until it finished... Then, we're gonna gather the infos of Video and Make sure to Take note all the infos needed.
 
-  To get the total frames of the video.
+  To get the total frames of the video. <sup>(You can see this info too while chopping the frames)</sup> 
   ```
   ffprobe -v error -select_streams v:0 -count_packets -show_entries stream=nb_read_packets -of csv=p=0 video.mkv
   ```
@@ -106,19 +106,19 @@ This section tells how to make it work. In more detailed way.
   Open your `Windows Powershell` and Run the Command below:
   ```
   cd ..
-  git clone https://github.com/{your_username_here}/ebtrfio-template
+  git clone https://github.com/{your_username_here}/{repo_name}
   ```
-  > **Note**: Make sure that you already forked or created this repository
+  > **Note**: Make sure that you already created a repository for this template. `{repo_name}` stands for the name of your repo you created for this template
   
   Now, Run this command:
   ```
-  cd ebtrfio-template
+  cd {repo_name}
   Copy-Item -Path "$($env:USERPROFILE)\Desktop\frames\frame_*.jpg" -Destination frames -Recurse
   git init
   git add .
   git commit -m "frames, update"
   ```
-  Provide your Git Infos, Must be the same as your username and email (it will not display it on public):
+  Provide your Git Infos, Must be the same as your username and email <sup>(it will not display it on public)</sup>:
   ```
   git config --global user.name "<your-username>"
   git config --global user.email <your-email@gmail.com>
@@ -128,7 +128,7 @@ This section tells how to make it work. In more detailed way.
   
   - And finally, Push the changes to the repository:
   ```
-  git remote set-url origin https://{your_username}:{your_token_here}@github.com/{your_username}/ebtrfio-template
+  git remote set-url origin https://{your_username}:{your_token_here}@github.com/{your_username}/{repo_name}
   git push origin master
   ```
 
@@ -194,11 +194,11 @@ This section tells how to make it work. In more detailed way.
   </details>
 
   ## Notes and Tips
-  - In Default, the bot will automatically run every 2 hrs. <sup>(This is our Standard Interval posting)</sup>
+  - By Default, the bot will automatically run every 2 hrs. <sup>(This is our Standard Interval posting)</sup>
   - When proceeding to a new Episode, you should create a Pull Request to your repo. <sup>(Don't forget `frameiterator` to change back to `0`)</sup>
   - Recommended source: `Erai-Raws`, `Nyaa`.
   - If you need help, just message us on our [<sub><img src="https://camo.githubusercontent.com/8f245234577766478eaf3ee72b0615e99bb9ef3eaa56e1c37f75692811181d5c/68747470733a2f2f6564656e742e6769746875622e696f2f537570657254696e7949636f6e732f696d616765732f7376672f66616365626f6f6b2e737667" height="20"></sub> Facebook](https://facebook.com/btrframes) page. Or create an Issue/Discussion thread here.
-  - When using a VPS/Droplet server, just clone this repository and paste all your frames to `fb/frames` directory, also the tokens are gonna be in `secrets.sh` file
+  - When using a VPS/Droplet server, just clone this repository and paste all your frames to `frames` directory, also the tokens are gonna be in `secrets.sh` file
   > **Warning**: We're not responsible whatever happens to your Facebook account. Just to be safe, i prefer using an dedicated account for the page, else you can use your main but use it with care. *Use at your own risk*
 ## Status
 ![Status Image](status/status.jpg)
