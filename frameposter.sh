@@ -85,7 +85,7 @@ create_gif(){
 }
 
 rand_func(){ od -vAn -N2 -tu2 < /dev/urandom | tr -dc '0-9' ;}
-rand_range(){ awk -v "a=100" -v "b=350" -v "c=$(rand_func)" 'BEGIN{srand();print int(a+(rand() - c % c)*(b-a+1))}' ;}
+rand_range(){ awk -v "a=100" -v "b=350" 'BEGIN{srand();print int(a+rand()*(b-a+1))}' ;}
 
 random_crop(){
 	[[ -e "${rc_location}" ]] && rm "${rc_location}"
@@ -111,7 +111,7 @@ nth(){
 	# New Formula: {current_frame} * ({vid_totalframe} / {total_frame}) / {frame_rate} = {total_secs}
 	# Ex: (1532 - 1) * 7.98475609756 / 23.93 = 511.49
 
-	# This code below is standard, without tweaks. uncomment if the subtitles we're synced.
+	# This code below is standard, without tweaks.
 	sec="$(bc -l <<< "scale=11; ${vid_totalfrm} / ${total_frame}")"
 	sec="$(bc -l <<< "scale=2; (${t:-1} - ${frm_delay}) * ${sec} / ${vid_fps}")" secfloat="${sec#*.}" sec="${sec%.*}" sec="${sec:-0}"
 
@@ -174,7 +174,7 @@ scrv3(){
 
 
 # Check all the dependencies if installed
-dep_check bash sed grep curl bc || failed
+dep_check awk sed grep curl bc || failed
 
 # Create DIRs and files for iterator and temps/logs
 [[ ! -d ./fb ]] && mkdir ./fb
@@ -230,7 +230,7 @@ if [[ -e "${locationsub}" ]]; then
 	[[ "${is_empty}" = "1" ]] || curl -sfLX POST --retry 2 --retry-connrefused --retry-delay 7 "${graph_url_main}/v16.0/${id}/comments?access_token=${token}" --data-urlencode "message=${message_comment}" -o /dev/null
 fi
 
-# Addons, you can comment this line if you don't want to comment the GIF created on previous 10 frames
+# Addons, GIF posting
 if [[ "${gif_post}" = "1" ]]; then
 	sleep "${delay_action}" # Delay
 	[[ -n "${giphy_token}" ]] && [[ "${prev_frame}" -gt "${gif_prev_framecount}" ]] && create_gif "$((prev_frame - gif_prev_framecount))" "${prev_frame}"
