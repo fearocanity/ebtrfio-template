@@ -2,6 +2,7 @@ name: "init banner"
 on:
    workflow_dispatch:
    schedule:
+     # You can change this CRON syntax to customize execute interval
      - cron: "0 */2 * * *"
 
 jobs:
@@ -16,7 +17,7 @@ jobs:
       - name: commit banner
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "Processing..."
+          commit_message: "stat: Processing..."
           repository: .
           file_pattern: status/*.jpg
         env:

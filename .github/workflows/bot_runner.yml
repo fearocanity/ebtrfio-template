@@ -12,7 +12,7 @@ jobs:
       should_skip: ${{ steps.skip_check.outputs.should_skip }}
     steps:
       - id: skip_check
-        uses: fkirc/skip-duplicate-actions@v5.3.0
+        uses: fkirc/skip-duplicate-actions@v5
         with:
           concurrent_skipping: 'same_content_newer'
           skip_after_successful_duplicate: 'true'
@@ -34,7 +34,7 @@ jobs:
       - name: Auto Commit
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "Posted!!"
+          commit_message: "stat: Posted!!"
           repository: .
           file_pattern: README.md fb/* frameposter.sh frame_main.sh status/* 
         env:
