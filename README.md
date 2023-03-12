@@ -21,6 +21,7 @@ This section tells how to make it work. In more detailed way.
   <summary>Click Here to Show</summary><p>
   
   To set up a Facebook long-lived access token, follow these steps:
+  - Go to [Facebook Developer](https://developers.facebook.com/)
    - Click `My Apps`<p>
    ![Screenshot](https://user-images.githubusercontent.com/91414643/221354558-e2f22a89-33d6-4edb-9218-fb96aae7a9af.png)
    - Click `Create App`<p>
