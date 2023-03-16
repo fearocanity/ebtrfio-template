@@ -4,7 +4,7 @@
 # Author: EBTRFIO
 # Date: Dec. 10 2022
 # Licence: None
-# Version: v1.3.1.3
+# Version: v1.3.1
 # ############# #
 
 # --- Dependencies --- #
@@ -179,7 +179,8 @@ dep_check awk sed grep curl bc || failed
 # Create DIRs and files for iterator and temps/logs
 [[ ! -d ./fb ]] && mkdir ./fb
 [[ ! -e ./fb/frameiterator ]] && printf '%s' "1" > ./fb/frameiterator
-[[ -z "$(<./fb/frameiterator)" ]] && printf '%s' "1" > ./fb/frameiterator
+{ [[ -z "$(<./fb/frameiterator)" ]] || [[ "$(<./fb/frameiterator)" -lt 1 ]] ;} && printf '%s' "1" > ./fb/frameiterator
+
 [[ "${total_frame}" -lt "$(<./fb/frameiterator)" ]] && exit 0
 
 # Get the previous frame from a file that acts like an iterator
