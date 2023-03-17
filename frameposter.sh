@@ -4,7 +4,7 @@
 # Author: EBTRFIO
 # Date: Dec. 10 2022
 # Licence: None
-# Version: v1.3.1.3
+# Version: v1.3.1
 # ############# #
 
 # --- Dependencies --- #
@@ -15,7 +15,7 @@
 # * curl
 # * bc
 # ############# #
-[[ -e ./secrets.sh ]] && . ./secrets.sh
+[[ -e ./secret.sh ]] && . ./secret.sh
 [[ -e ./config.conf ]] && . ./config.conf
 # Invi Space (Space that actually bypass the blank character stripper of facebook)
 # 　　　　　　　
@@ -110,6 +110,9 @@ nth(){
 	#
 	# New Formula: {current_frame} * ({vid_totalframe} / {total_frame}) / {frame_rate} = {total_secs}
 	# Ex: (1532 - 1) * 7.98475609756 / 23.93 = 511.49
+	for i in "${vid_totalfrm}" "${total_frame}" "${vid_fps}"; do
+		[[ -z "${i}" ]] && { printf '%s\n' "posting error: lack of information (\"nth\" function)" ; failed ;} 
+	done
 
 	# This code below is standard, without tweaks.
 	sec="$(bc -l <<< "scale=11; ${vid_totalfrm} / ${total_frame}")"
@@ -179,7 +182,8 @@ dep_check awk sed grep curl bc || failed
 # Create DIRs and files for iterator and temps/logs
 [[ ! -d ./fb ]] && mkdir ./fb
 [[ ! -e ./fb/frameiterator ]] && printf '%s' "1" > ./fb/frameiterator
-[[ -z "$(<./fb/frameiterator)" ]] && printf '%s' "1" > ./fb/frameiterator
+{ [[ -z "$(<./fb/frameiterator)" ]] || [[ "$(<./fb/frameiterator)" -lt 1 ]] ;} && printf '%s' "1" > ./fb/frameiterator
+
 [[ "${total_frame}" -lt "$(<./fb/frameiterator)" ]] && exit 0
 
 # Get the previous frame from a file that acts like an iterator
@@ -193,10 +197,15 @@ if [[ -e "${log}" ]] && grep -qE "\[√\] Frame: ${prev_frame}, Episode ${episod
 fi
 
 # This is where you can change your post captions and own format (that one below is the default)
+for i in "${season}" "${episode}" "${total_frame}"; do
+		[[ -z "${i}" ]] && { printf '%s\n' "posting error: lack of information (message variable)" ; failed ;} 
+done
 message="Season ${season}, Episode ${episode}, Frame ${prev_frame} out of ${total_frame}"
 
 # Call the Scraper of Subs
-scrv3 "$(nth "${prev_frame}")"
+if [[ "${sub_posting}" = "1" ]] && [[ -e "${locationsub}" ]] && [[ -n "$(<"${locationsub}")" ]]; then
+	scrv3 "$(nth "${prev_frame}")"
+fi
 
 # Compare if the Subs are OP/ED Songs or Not
 if [[ "${is_opedsong}" = "1" ]]; then
