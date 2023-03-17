@@ -32,6 +32,8 @@ This section tells how to make it work. In more detailed way.
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221354981-deb1fb14-1d64-45fa-aa91-e9b2797fe06f.png)
   - Hover through `tools` and Click `Graph Api Explorer`<p>
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221355248-9e7de41c-a9c9-46d6-9b51-b4a084c3bddc.png)
+  - Grant Permissions for token, Click `Add a Permission`, Then click `Events Groups Pages` click all the following
+  ![Screenshot](https://user-images.githubusercontent.com/93582751/225804307-1b147266-4fc4-4b13-b35c-630ab2d70edb.png)
   - Click on `User Token` and choose the page you want.<p>
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221355474-107eaf3b-c9f7-4179-81cf-4cb4b58f396d.png)
   - There's gonna popup there, just give the App Permissions and Authorize it.
