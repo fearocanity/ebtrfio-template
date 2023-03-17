@@ -146,9 +146,7 @@ This section tells how to make it work. In more detailed way.
   
   - Add subtitle file <sup>(only supported **\*.ass** subtitle)</sup>
   - Insert all the infos needed in `config.conf` file.
-  https://github.com/fearocanity/ebtrfio-template/blob/97359191bdd5665657420b278343c04096afd76e/config.conf#L4-L9
-  https://github.com/fearocanity/ebtrfio-template/blob/97359191bdd5665657420b278343c04096afd76e/config.conf#L12
-  https://github.com/fearocanity/ebtrfio-template/blob/97359191bdd5665657420b278343c04096afd76e/config.conf#L23
+  ![Screenshot](https://user-images.githubusercontent.com/93582751/225806519-3b563df1-68f0-485c-9579-61dde2a74a4f.png)
   - And push it to master.
   
   We need to setup our repo secret variables too...
