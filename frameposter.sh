@@ -197,7 +197,9 @@ fi
 message="Season ${season}, Episode ${episode}, Frame ${prev_frame} out of ${total_frame}"
 
 # Call the Scraper of Subs
-scrv3 "$(nth "${prev_frame}")"
+if [[ "${sub_posting}" = "1" ]] && [[ -e "${locationsub}" ]] && [[ -n "$(<${locationsub})" ]]; then
+	scrv3 "$(nth "${prev_frame}")"
+fi
 
 # Compare if the Subs are OP/ED Songs or Not
 if [[ "${is_opedsong}" = "1" ]]; then
