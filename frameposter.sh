@@ -198,7 +198,7 @@ fi
 
 # This is where you can change your post captions and own format (that one below is the default)
 for i in "${season}" "${episode}" "${total_frame}"; do
-		[[ -z "${i}" ]] && { printf '%s\n' "posting error: lack of information (\"nth\" function)" ; failed ;} 
+		[[ -z "${i}" ]] && { printf '%s\n' "posting error: lack of information (message variable)" ; failed ;} 
 done
 message="Season ${season}, Episode ${episode}, Frame ${prev_frame} out of ${total_frame}"
 
