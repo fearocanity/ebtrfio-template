@@ -203,7 +203,7 @@ done
 message="Season ${season}, Episode ${episode}, Frame ${prev_frame} out of ${total_frame}"
 
 # Call the Scraper of Subs
-if [[ "${sub_posting}" = "1" ]] && [[ -e "${locationsub}" ]] && [[ -n "$(<${locationsub})" ]]; then
+if [[ "${sub_posting}" = "1" ]] && [[ -e "${locationsub}" ]] && [[ -n "$(<"${locationsub}")" ]]; then
 	scrv3 "$(nth "${prev_frame}")"
 fi
 
