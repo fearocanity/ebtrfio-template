@@ -15,7 +15,7 @@
 # * curl
 # * bc
 # ############# #
-[[ -e ./secrets.sh ]] && . ./secrets.sh
+[[ -e ./secret.sh ]] && . ./secret.sh
 [[ -e ./config.conf ]] && . ./config.conf
 # Invi Space (Space that actually bypass the blank character stripper of facebook)
 # 　　　　　　　
