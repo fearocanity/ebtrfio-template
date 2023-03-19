@@ -1,0 +1,26 @@
+name: "Repo Checker"
+on:
+  push:
+    paths:
+      - '**.sh'
+      - 'fb/frameiterator'
+      - 'frames/**'
+      - 'fb/**.ass'
+      - 'config.conf'
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check-repo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        env:
+          tok_fb: ${{ secrets.TOK_FB }}
+          tok_gif: ${{ secrets.TOK_GIF }}
+      - name: execute
+        run: bash checkermain.sh "${tok_fb}" "${tok_gif}" >> "${GITHUB_STEP_SUMMARY}"

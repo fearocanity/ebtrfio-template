@@ -202,10 +202,11 @@ This section tells how to make it work. In more detailed way.
 
   ## Notes and Tips
   - By Default, the bot will automatically run every 2 hrs. <sup>(This is our Standard Interval posting)</sup>
-  - When proceeding to a new Episode, you should create a Pull Request to your repo. <sup>(Don't forget `frameiterator` to change back to `0`)</sup>
+  - When proceeding to a new Episode, you should create a Pull Request to your repo. <sup>(Don't forget `frameiterator` to change back to `1`)</sup>
+  - Use `action/repo-checker` as your basis for checking errors and misconfiguration.
   - Recommended source: `Erai-Raws`, `Nyaa`.
   - If you need help, just message us on our [<sub><img src="https://camo.githubusercontent.com/8f245234577766478eaf3ee72b0615e99bb9ef3eaa56e1c37f75692811181d5c/68747470733a2f2f6564656e742e6769746875622e696f2f537570657254696e7949636f6e732f696d616765732f7376672f66616365626f6f6b2e737667" height="20"></sub> Facebook](https://facebook.com/btrframes) page. Or create an Issue/Discussion thread here.
-  - When using a VPS/Droplet server, just clone this repository and paste all your frames to `frames` directory, also the tokens are gonna be in `secrets.sh` file
+  - When using a VPS/Droplet server, just clone this repository and paste all your frames to `frames` directory, also the tokens are gonna be in `secret.sh` file.
   > **Warning**: We're not responsible whatever happens to your Facebook account. Just to be safe, i prefer using an dedicated account for the page, else you can use your main but use it with care. *Use at your own risk*
 ## Status
 ![Status Image](status/status.jpg)
