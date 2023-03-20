@@ -8,8 +8,8 @@ gif_token="${2}"
 
 [[ -e ./config.conf ]] && . ./config.conf
 
-format_noerr(){ printf '$\\color{#126329}\\colorbox{#DAFAE2} {\\textsf{\\normalsize\&#x2611; \\kern{0.2cm}\\normalsize  %s}}$' "${*}" ;}
-format_err(){ printf '$\\color{#82061E}\\colorbox{#FFEBEA} {\\textsf{\\normalsize\&#x26A0; \\kern{0.2cm}\\normalsize %s}}$' "${*}" ;} 
+format_noerr(){ printf '$\\fbox{\\colorbox{#DAFAE2}{\\color{#126329}\\textsf{\\normalsize  \\&#x2611; \\kern{0.2cm}\\small  %s  }}}$' "${*}" ;}
+format_err(){ printf '$\\fbox{\\colorbox{#FFEBEA}{\\color{#82061E}\\textsf{\\normalsize  \\&#x26A0; \\kern{0.2cm}\\small  %s  }}}$' "${*}" ;} 
 format_table(){ printf '| \x60%s\x60 | %s |\n' "${1}" "${2}" ;}
 
 # Append Header
