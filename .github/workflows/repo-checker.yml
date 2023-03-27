@@ -7,6 +7,7 @@ on:
       - 'frames/**'
       - 'fb/**.ass'
       - 'config.conf'
+  pull_request:
   workflow_dispatch:
 
 jobs:
