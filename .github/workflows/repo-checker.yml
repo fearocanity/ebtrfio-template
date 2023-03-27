@@ -7,12 +7,7 @@ on:
       - 'frames/**'
       - 'fb/**.ass'
       - 'config.conf'
-  pull_request:
   workflow_dispatch:
-
-concurrency:
-  group: ${{ github.ref }}
-  cancel-in-progress: true
 
 jobs:
   check-repo:
