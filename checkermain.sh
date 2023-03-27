@@ -22,6 +22,7 @@ checkif(){
 		x="$(eval "printf '%s' \"${c}\"")"
 		if [[ -z "${x}" ]]; then
 			format_table "${i}" "$(format_err "Variable is empty")" && err_state="1"
+			printf '\e[31mERROR\e[0m - %s\n' "Variable is empty" >&2
 		else
 			format_table "${i}" "$(format_noerr "Passed")"
 		fi
@@ -33,10 +34,13 @@ sub_check(){
 	if [[ "${sub_posting}" = "1" ]]; then
 		if [[ -z "${subtitle_file}" ]]; then
 			format_table "subtitle_file" "$(format_err "Variable is empty")" && err_state="1"
+			printf '\e[31mERROR\e[0m - %s\n' "Variable is empty" >&2
 		elif [[ ! -e "${subtitle_file}" ]]; then
 			format_table "subtitle_file" "$(format_err "File not found")" "subtitle_file" && err_state="1"
+			printf '\e[31mERROR\e[0m - %s\n' "File not found" >&2
 		elif [[ -z "$(<./fb/"${subtitle_file}")" ]]; then
-			format_table "subtitle_file" "$(format_err "File is empty")" && err_state="1"
+			format_table "subtitle_file" "$(format_err "File not found")" && err_state="1"
+			printf '\e[31mERROR\e[0m - %s\n' "File not found" >&2
 		else
 			format_table "subtitle_file" "$(format_noerr "Passed")"
 		fi
@@ -47,17 +51,21 @@ frames_check(){
 	frame_number="$(find frames/frame_* 2>/dev/null | wc -l)"
 	if [[ ! -d frames ]]; then
 		format_table "frames" "$(format_err "Frames directory not found")" && err_state="1"
+		printf '\e[31mERROR\e[0m - %s\n' "Frames directory not found" >&2
 	elif [[ "${frame_number}" -lt 1 ]]; then
 		format_table "frames" "$(format_err "No frames available")" && err_state="1"
+		printf '\e[31mERROR\e[0m - %s\n' "No frames available" >&2
 	else
 		format_table "frames" "$(format_noerr "Total Frames: ${frame_number}")"
 	fi
 	if ! [[ -e fb/frameiterator ]]; then
 		format_table "frameiterator" "$(format_err "File not found")" && err_state="1"
+		printf '\e[31mERROR\e[0m - %s\n' "File not found" >&2
 	elif grep -vEq '^[0-9]*$' fb/frameiterator; then
-		format_table "frameiterator" "$(format_err "Invalid format.")" && err_state="1"
+		format_table "frameiterator" "$(format_err "Invalid format")" && err_state="1"
+		printf '\e[31mERROR\e[0m - %s\n' "Invalid format" >&2
 	else
-		format_table "frameiterator" "$(format_noerr "Valid format.")"
+		format_table "frameiterator" "$(format_noerr "Valid format")"
 	fi
 }
 
@@ -66,12 +74,14 @@ token_check(){
 		format_table "fb_token" "$(format_noerr "Token is Working")"
 	else
 		format_table "fb_token" "$(format_err "An error occured")" && err_state="1"
+		printf '\e[31mERROR\e[0m - %s\n' "An error occured" >&2
 	fi
 	if [[ "${gif_post}" = "1" ]]; then
 		if curl -sLf -X HEAD "https://api.giphy.com/v1/gifs/trending?api_key=${2}" -o /dev/null; then
 			format_table "gif_token" "$(format_noerr "Token is Working")"
 		else
 			format_table "gif_token" "$(format_err "An error occured")" && err_state="1"
+			printf '\e[31mERROR\e[0m - %s\n' "An error occured" >&2
 		fi
 	fi
 }
