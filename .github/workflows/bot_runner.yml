@@ -4,6 +4,7 @@ on:
     workflows: [init banner]
     types:
        - completed
+
 concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: false
