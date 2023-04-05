@@ -70,7 +70,7 @@ frames_check(){
 }
 
 token_check(){
-	if curl -sLf -X HEAD "${graph_url_main}/me?access_token=${1}" -o /dev/null; then
+	if curl -sLf "${graph_url_main}/me/feed?access_token=${1}" -o /dev/null; then
 		format_table "fb_token" "$(format_noerr "Token is Working")"
 	else
 		format_table "fb_token" "$(format_err "An error occured")" && err_state="1"
