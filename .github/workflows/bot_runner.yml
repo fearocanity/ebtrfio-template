@@ -14,15 +14,34 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.triggering_actor == github.repository_owner }} 
     steps:
-      - uses: actions/checkout@v3
-      - name: Run
+      - name: "checkout"
+        uses: actions/checkout@v3
+        
+      - name: "check latest"
+        run: |
+          LATEST_COMMIT="$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/commits/${{ github.ref }}" | jq -r .sha)"
+          if [ "${LATEST_COMMIT}" != "${GITHUB_SHA}" ]; then
+            printf '%s\n' "current commit is not the latest" >&2
+            exit 1
+          fi
+          
+      - name: "rerun on fail"
+        if: ${{ failure() }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WORKFLOW_FILE: "bot_runner.yaml"
+        run: |
+          curl -H "Authorization: Bearer ${GITHUB_TOKEN}" -H "Accept: application/vnd.github.v3+json" -X POST -d '{"ref":"'"${{ github.ref }}"'","inputs":{}}' "https://api.github.com/repos/${{ github.repository }}/actions/workflows/${WORKFLOW_FILE}/dispatches"
+          exit 1
+
+      - name: "run"
         continue-on-error: true
         env:
             tok_fb: ${{ secrets.TOK_FB }}
             tok_gif: ${{ secrets.TOK_GIF }}
         run: bash frame_main.sh "${tok_fb}" "${tok_gif}"
         
-      - name: Auto Commit
+      - name: "commit changes"
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "stat: Posted!!"
