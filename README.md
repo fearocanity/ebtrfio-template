@@ -1,13 +1,19 @@
 <h1 align="center">Every <sup><sub><sub>(name)</sub></sub></sup> Frame in Order BOT</h1>
-<p align="center">This is where we run our BOT.</p>
 
-# Table of Contents
+<div align="center">
+
+`An OpenSource BOT for Facebook Frame in Order`
+
+</div>
+
+## Table of Contents
 - [Tutorial](#tutorial)
   - [Setup FB Token](#setup-facebook-token)
   - [Setup Frames](#setup-the-frames)
   - [Setup your BOT](#setup-your-bot)
   - [How to Run the Bot Manually](#how-to-run-the-bot-manually)
   - [How to Manually Disable the Posting](#how-to-manually-disable-the-posting)
+- [Notes and Tips](#notes-and-tips)
 - [Status](#status)
 
 
@@ -48,13 +54,13 @@ This section tells how to make it work. In more detailed way.
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221356335-470d5ab6-5d28-44fa-92fc-eb6ccddce722.png)
   
   </details>
-  
+
   ---
 
   ### Setup the Frames
   <details>
   <summary>Click Here to Show</summary><p>
-  
+
   You need to use Windows Powershell to use program called `FFMPEG`
 
   We need to install Scoop First, before installing `FFMPEG`<p>
@@ -201,6 +207,10 @@ This section tells how to make it work. In more detailed way.
   </details>
 
   ## Notes and Tips
+  <table>
+  <tr>
+  <td>
+
   - By Default, the bot will automatically run every 2 hrs. <sup>(This is our Standard Interval posting)</sup>
   - When proceeding to a new Episode, you should create a Pull Request to your repo. <sup>(Don't forget `frameiterator` to change back to `1`)</sup>
   - Use `action/repo-checker` as your basis for checking errors and misconfiguration.
@@ -208,5 +218,10 @@ This section tells how to make it work. In more detailed way.
   - If you need help, just message us on our [<sub><img src="https://camo.githubusercontent.com/8f245234577766478eaf3ee72b0615e99bb9ef3eaa56e1c37f75692811181d5c/68747470733a2f2f6564656e742e6769746875622e696f2f537570657254696e7949636f6e732f696d616765732f7376672f66616365626f6f6b2e737667" height="20"></sub> Facebook](https://facebook.com/btrframes) page. Or create an Issue/Discussion thread here.
   - When using a VPS/Droplet server, just clone this repository and paste all your frames to `frames` directory, also the tokens are gonna be in `secret.sh` file.
   > **Warning**: We're not responsible whatever happens to your Facebook account. Just to be safe, i prefer using an dedicated account for the page, else you can use your main but use it with care. *Use at your own risk*
+
+  </table>
+  </tr>
+  </td>
+
 ## Status
 ![Status Image](status/status.jpg)
