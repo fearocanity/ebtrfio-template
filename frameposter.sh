@@ -4,7 +4,7 @@
 # Author: EBTRFIO
 # Date: Dec. 10 2022
 # Licence: None
-# Version: v1.3.4
+# Version: v1.3.5
 # ############# #
 
 # --- Dependencies --- #
@@ -156,7 +156,7 @@ scrv3(){
 					print "【"g"】"
 				} else if (f ~ /Signs,,/) {
 					print "\""g"\""
-				} else if (f ~ /Songs_OP,OP/ || f ~ /Songs_ED,ED/) {
+				} else if (f ~ /Songs[^,],[^,]/) {
 					print "『"g"』"
 				} else {
 					print g
@@ -196,10 +196,11 @@ if [[ -e "${log}" ]] && grep -qE "\[√\] Frame: ${prev_frame}, Episode ${episod
 	exit 0
 fi
 
-# This is where you can change your post captions and own format (that one below is the default)
 for i in "${season}" "${episode}" "${total_frame}"; do
 		[[ -z "${i}" ]] && { printf '%s\n' "posting error: lack of information (message variable)" ; failed ;} 
 done
+
+# This is where you can change your post captions and own format (that one below is the default)
 message="Season ${season}, Episode ${episode}, Frame ${prev_frame} out of ${total_frame}"
 
 # Call the Scraper of Subs
