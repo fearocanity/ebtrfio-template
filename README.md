@@ -14,6 +14,7 @@
   - [How to Run the Bot Manually](#how-to-run-the-bot-manually)
   - [How to Manually Disable the Posting](#how-to-manually-disable-the-posting)
 - [Notes and Tips](#notes-and-tips)
+- [Contributing](#contributing)
 - [Status](#status)
 
 
@@ -224,6 +225,15 @@ This section tells how to make it work. In more detailed way.
   </table>
   </tr>
   </td>
+
+## Contributing
+<div align="center">
+
+```diff
++ All PR's are now welcome!! +
+```
+If you have ideas or fixes to the bugs and also improving the codes, Feel free to [Contribute](./CONTRIBUTING.md)! 😉
+</div>
 
 ## Status
 ![Status Image](status/status.jpg)
