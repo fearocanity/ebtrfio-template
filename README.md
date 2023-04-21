@@ -14,6 +14,7 @@
   - [How to Run the Bot Manually](#how-to-run-the-bot-manually)
   - [How to Manually Disable the Posting](#how-to-manually-disable-the-posting)
 - [Notes and Tips](#notes-and-tips)
+- [Contributing](#contributing)
 - [Status](#status)
 
 
@@ -212,6 +213,7 @@ This section tells how to make it work. In more detailed way.
   <td>
 
   - By Default, the bot will automatically run every 2 hrs. <sup>(This is our Standard Interval posting)</sup>
+  - We recommend to use `Use this Template` button rather than forking this repository.
   - Keep your repository updated with [parent repository](https://github.com/fearocanity/ebtrfio-template) for fixes and security measure updates.
   - When proceeding to a new Episode, you should create a Pull Request to your repo. <sup>(Don't forget `frameiterator` to change back to `1`)</sup>
   - Use `action/repo-checker` as your basis for checking errors and misconfiguration.
@@ -223,6 +225,15 @@ This section tells how to make it work. In more detailed way.
   </table>
   </tr>
   </td>
+
+## Contributing
+<div align="center">
+
+```diff
++ All PR's are now welcome!! +
+```
+If you have ideas or fixes to the bugs and also improving the codes, Feel free to [Contribute](./CONTRIBUTING.md)! 😉
+</div>
 
 ## Status
 ![Status Image](status/status.jpg)
