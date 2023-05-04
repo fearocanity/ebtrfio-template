@@ -4,7 +4,7 @@
 # Author: EBTRFIO
 # Date: Dec. 10 2022
 # Licence: None
-# Version: v1.3.6
+# Version: v1.3.7
 # ############# #
 
 # --- Dependencies --- #
