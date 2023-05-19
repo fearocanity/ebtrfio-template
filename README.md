@@ -2,7 +2,8 @@
 
 <div align="center">
 
-`An OpenSource BOT for Facebook Frame in Order`
+`An OpenSource BOT for Facebook Frame in Order`<br>
+`that runs without 24/7 hosting costs`
 
 </div>
 
@@ -35,12 +36,13 @@ This section tells how to make it work. In more detailed way.
    ![Screenshot](https://user-images.githubusercontent.com/91414643/221354832-0649cfaa-2414-4530-ab5c-b0b8b732a9be.png)
    - Click `Business` and `Next`<sup><sub>(Business has more perks, than others so pick it)</sub></sup><p>
    ![image](https://user-images.githubusercontent.com/91414643/221354888-f7abb53d-7c88-4116-b89f-bda5e07e71bd.png)
-  - This is very Self Explanatory, I Guess you already know what to do.<p>
+  - This is very Self Explanatory, I guess you already know what to do.<p>
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221354981-deb1fb14-1d64-45fa-aa91-e9b2797fe06f.png)
   - Hover through `tools` and Click `Graph Api Explorer`<p>
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221355248-9e7de41c-a9c9-46d6-9b51-b4a084c3bddc.png)
   - Grant Permissions for token, Click `Add a Permission`, Then click `Events Groups Pages` click all the following
   ![Screenshot](https://user-images.githubusercontent.com/93582751/225804307-1b147266-4fc4-4b13-b35c-630ab2d70edb.png)
+  > **Note**: The scopes should be color `black` as the image shows, If it shows color `green` it means it's not yet applied to the token. (Repeat the proccess if the next step doesn't work)
   - Click on `User Token` and choose the page you want.<p>
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221355474-107eaf3b-c9f7-4179-81cf-4cb4b58f396d.png)
   - There's gonna popup there, just give the App Permissions and Authorize it.
@@ -220,7 +222,7 @@ This section tells how to make it work. In more detailed way.
   - Recommended source: `Erai-Raws`, `Nyaa`.
   - If you need help, just message us on our [<sub><img src="https://camo.githubusercontent.com/8f245234577766478eaf3ee72b0615e99bb9ef3eaa56e1c37f75692811181d5c/68747470733a2f2f6564656e742e6769746875622e696f2f537570657254696e7949636f6e732f696d616765732f7376672f66616365626f6f6b2e737667" height="20"></sub> Facebook](https://facebook.com/btrframes) page. Or create an Issue/Discussion thread here.
   - When using a VPS/Droplet server, just clone this repository and paste all your frames to `frames` directory, also the tokens are gonna be in `secret.sh` file.
-  > **Warning**: We're not responsible whatever happens to your Facebook account. Just to be safe, i prefer using an dedicated account for the page, else you can use your main but use it with care. *Use at your own risk*
+  > **Warning**: We're not responsible whatever happens to your Facebook account. Just to be safe, I prefer using an dedicated account for the page, else you can use your main but use it with care. *Use at your own risk*
 
   </table>
   </tr>
