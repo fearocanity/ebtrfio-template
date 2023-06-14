@@ -16,23 +16,16 @@ jobs:
           printf '%s\n' "Runner prevented to run because the script is executed by an untrusted user. (Only owner can execute, for security)" >&2
           exit 1
 
-      - name: "get bot_runner workflow id"
-        id: get_run_id
-        run: |
-          response="$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/actions/workflows/bot_runner.yml/runs")"
-          run_id="$(printf '%s' "${response}" | jq -r '.workflow_runs[0].id')"
-
-      - name: "check status"
+      - name: "chk wf status"
         id: check_status
         run: |
-          response="$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ steps.get_run_id.outputs.run_id }}")"
-          status="$(printf '%s' "${response}" | jq -r '.status')"
-
-      - name: "check if running"
-        if: ${{ steps.check_status.outputs.status == 'in_progress' }}
-        run: |
-          printf '%s\n' "The bot_runner is still running, The script prevented this workflow to run to avoid conflicts... Cancelling!!" >&2
-          exit 1
+          response="$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/actions/workflows/bot_runner.yml/runs")"
+          status="$(echo "${response}" | jq -r '.workflow_runs[].status')"
+          if grep -qE 'in_progress' <<< "${status}"; then
+            echo "The bot_runner is still running, The script prevented this workflow to run to avoid conflicts... Cancelling!!"
+            exit 1
+          fi
+          : "Ignore"
 
  inits:
     runs-on: ubuntu-latest
