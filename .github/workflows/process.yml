@@ -15,7 +15,6 @@ jobs:
           trig_actor: ${{ github.triggering_actor }}
           repo_ownr: ${{ github.repository_owner }}
         run: |
-          [[ "${trig_actor}" == "${repo_ownr}" ]] && echo "EQUAL"
           case "${trig_actor}" in
             "${repo_ownr}"|github-actions*) : ;;
             *) printf '%s\n'"Runner prevented to run because the script is executed by an untrusted user \"${trig_actor}\". (Only owner can execute, for security)" >&2 ; exit 1 ;;
