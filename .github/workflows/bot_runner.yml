@@ -14,10 +14,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "ownership check"
-        if: ${{ github.triggering_actor != github.repository_owner }}
+        env:
+          trig_actor: ${{ github.triggering_actor }}
+          repo_ownr: ${{ github.repository_owner }}
         run: |
-          printf '%s\n' "Runner prevented to run because the script is executed by an untrusted user \"${{ github.triggering_actor }}\". (Only owner can execute, for security)" >&2
-          exit 1
+          case "${trig_actor}" in
+            "${repo_ownr}"|github-actions*) : ;;
+            *) printf '%s\n'"Runner prevented to run because the script is executed by an untrusted user \"${trig_actor}\". (Only owner can execute, for security)" >&2 ; exit 1 ;;
+          esac
 
       - name: "success checker"
         run: |
@@ -26,22 +30,16 @@ jobs:
               exit 1
           fi
 
-      - name: "check latest"
+      - name: "check latest || dispatches if fails"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           LATEST_COMMIT="$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/commits/${{ github.ref }}" | jq -r .sha)"
           if [ "${LATEST_COMMIT}" != "${GITHUB_SHA}" ]; then
             printf '%s\n' "Current commit is not the latest." >&2
+            curl -H "Authorization: Bearer ${GITHUB_TOKEN}" -H "Accept: application/vnd.github.v3+json" -X POST -d '{"ref":"'"${{ github.ref }}"'","inputs":{}}' "https://api.github.com/repos/${{ github.repository }}/actions/workflows/process.yml/dispatches"
             exit 1
           fi
-
-      - name: "rerun on fail"
-        if: ${{ failure() }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          WORKFLOW_FILE: "process.yml"
-        run: |
-          curl -H "Authorization: Bearer ${GITHUB_TOKEN}" -H "Accept: application/vnd.github.v3+json" -X POST -d '{"ref":"'"${{ github.ref }}"'","inputs":{}}' "https://api.github.com/repos/${{ github.repository }}/actions/workflows/${WORKFLOW_FILE}/dispatches"
-          exit 1
 
   sample-bot:
     runs-on: ubuntu-latest

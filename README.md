@@ -12,6 +12,7 @@
   - [Setup FB Token](#setup-facebook-token)
   - [Setup Frames](#setup-the-frames)
   - [Setup your BOT](#setup-your-bot)
+  - [How to make your Content Public](#how-to-make-your-content-public)
   - [How to Run the Bot Manually](#how-to-run-the-bot-manually)
   - [How to Manually Disable the Posting](#how-to-manually-disable-the-posting)
 - [Notes and Tips](#notes-and-tips)
@@ -177,6 +178,27 @@ This section tells how to make it work. In more detailed way.
   ![???](https://user-images.githubusercontent.com/91414643/221912865-4d638bde-d221-4d94-aaef-1e64b8988a2b.jpg)
   
   - Then you're good to go for a test now. You're Done!!
+    
+  </details>
+  
+  ---
+  
+  ### How to make your Content Public
+  
+  > **Note**: This is an **Important Step** because all the contents you post will not be shown to public if it not set to `Live`
+  
+  <details>
+  <summary>Click Here to Show</summary><p>
+  
+  - Go to `Settings` > `Basic`<p>
+  ![Screenshot](https://github.com/fearocanity/ebtrfio-template/assets/91414643/d4a426a9-bfdb-41d9-a02a-b2888f712369)
+  
+  - And Change your `Privacy Policy URL` to `https://google.com`, Then click `Save Changes` at the bottom of the page.<p>
+  ![Screenshot](https://github.com/fearocanity/ebtrfio-template/assets/91414643/36ce8bbc-f558-4530-ae32-b2e3fb0765b6)
+  ![Screenshot](https://github.com/fearocanity/ebtrfio-template/assets/91414643/303607a9-770c-47cf-9194-75a3e13bc7fd)
+
+  - Then go back to the `Dashboard` and Switch your Transparency from Development to Live<p>
+  ![Screenshot](https://github.com/fearocanity/ebtrfio-template/assets/91414643/00d46954-a38c-4249-9264-3265ea9f3d83)
     
   </details>
   
