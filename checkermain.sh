@@ -91,4 +91,5 @@ sub_check
 frames_check
 token_check "${token}" "${gif_token}"
 printf '\n</div>'
-[[ "${err_state}" = "1" ]] && exit 1
+[[ "${err_state}" != "1" ]] || exit 1
+: "success"
