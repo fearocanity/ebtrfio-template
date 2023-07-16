@@ -20,7 +20,7 @@ lim_frame="$((prev_frame+fph-1))"
 time_ended="$(TZ="${sys_timezone}" date)"
 if [[ "${desc_update}" == "1" ]]; then
     ovr_all="$(sed -E ':L;s=\b([0-9]+)([0-9]{3})\b=\1,\2=g;t L' counter_n.txt)"
-    abt_txt="$(printf '%s\n%s' "Chopped 2 FPS, Posting ${fph:-??} Frames every 2 hours." "Total of \"${ovr_all:-0}\" frame was successfully posted!!")"
+    abt_txt="$(printf '%s\n%s' "Chopped ${img_fps:-??} FPS, Posting ${fph:-??} Frames every 2 hours." "Total of \"${ovr_all:-0}\" frame was successfully posted!!")"
     curl -sLk -X POST "https://graph.facebook.com/me/?access_token=${1}" --data-urlencode "about=${abt_txt}" -o /dev/null || true
 fi
 bash img_process.sh "success" "${prev_frame}" "${lim_frame}" "${time_started}" "${time_ended}"
