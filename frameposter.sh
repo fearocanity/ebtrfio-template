@@ -218,18 +218,19 @@ if [[ -e "${log}" ]] && grep -qE "\[√\] Frame: ${prev_frame}, Episode ${episod
 fi
 
 for i in "${season}" "${episode}" "${total_frame}"; do
-		[[ -z "${i}" ]] && { printf '%s\n' "posting error: lack of information (message variable)" ; failed ;} 
+		[[ -z "${i}" ]] && { printf '%s\n' "posting error: lack of basic information (message variable)" ; failed ;} 
 done
 
-# This is where you can change your post captions and own format (that one below is the default)
-message="Season ${season}, Episode ${episode}, Frame ${prev_frame} out of ${total_frame}"
-
-# Call the Scraper of Subs
-if [[ "${sub_posting}" = "1" ]] && [[ -e "${locationsub}" ]] && [[ -n "$(<"${locationsub}")" ]]; then
-	scrv3 "$(nth "${prev_frame}")"
+# Get frame time-stamp
+if [[ -n "${vid_fps}" ]] && [[ -n "${vid_totalfrm}" ]] && [[ -n "${total_frame}" ]]; then
+	frame_timestamp="$(nth "${prev_frame}")"
+	# Call the Scraper of Subs
+	if [[ -e "${locationsub}" ]] && [[ -n "$(<"${locationsub}")" ]]; then
+		scrv3 "${frame_timestamp}"
+	fi
 fi
 
-# Compare if the Subs are OP/ED Songs or Not
+# Compare if the Subs are OP/ED Songs or Not (only works on ass/ssa subtitles)
 if [[ "${is_opedsong}" = "1" ]]; then
 	message_comment="Lyrics:
 ${message_craft}"
@@ -237,6 +238,9 @@ else
 	message_comment="Subtitles:
 ${message_craft}"
 fi
+
+# refer in config.conf
+message="$(eval "printf '%s' $(sed -E 's_\{\\n\}_\n_g;s_(\{[^\x7d]*\})_\$\1_g' <<< \"${message}\")")"
 
 # Post images to Timeline of Page
 response="$(curl -sfLX POST --retry 2 --retry-connrefused --retry-delay 7 "${graph_url_main}/me/photos?access_token=${token}&published=1" -F "message=${message}" -F "source=@${frames_location}/frame_${prev_frame}.jpg")" || failed "${prev_frame}" "${episode}"
@@ -256,7 +260,7 @@ if [[ "${rand_post}" = "1" ]]; then
 fi
 
 # Comment the Subtitles on a post created on timeline
-if [[ -e "${locationsub}" ]]; then
+if [[ "${sub_posting}" = "1" ]] && [[ -e "${locationsub}" ]]; then
 	sleep "${delay_action}" # Delay
 	[[ "${is_empty}" = "1" ]] || curl -sfLX POST --retry 2 --retry-connrefused --retry-delay 7 "${graph_url_main}/v16.0/${id}/comments?access_token=${token}" --data-urlencode "message=${message_comment}" -o /dev/null
 fi
