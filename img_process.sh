@@ -53,7 +53,7 @@ case "${1}" in
 		shift 1
 		lim_frame="$((prev_frame+fph-1))"
 		[[ "${lim_frame}" -gt "${total_frame}" ]] && lim_frame="${total_frame}"
-		create_image "${prev_frame}" "${lim_frame}" "${total_frame}" "#a26b03" "Posting in Progress..." "darkgreen" "Time started: ${time_started}"
+		create_image "${prev_frame}" "${lim_frame}" "${total_frame}" "#a26b03" "Posting in Progress..." "darkgreen" "Time started: ${1}"
 		;;
 	failed)
 		shift 1
