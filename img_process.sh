@@ -35,7 +35,7 @@ create_image(){
 		-fill "#FFFFFF" -font status/fonts/mona_b.ttf -pointsize 35 -annotate +0-45 "${5}" \
 		-font status/fonts/mona_bb.ttf -pointsize 18 -interline-spacing "5" -annotate +0-0 "Frame: ${1}-${2}" \
 		-font status/fonts/mona_bb.ttf -pointsize 12 -interline-spacing "5" -annotate -180+36 "${percentage}%" \
-		-font mona_bb.ttf -pointsize 10 -interline-spacing "5" -annotate -0+60 "${7}" \
+		-font status/fonts/mona_bb.ttf -pointsize 10 -interline-spacing "5" -annotate -0+60 "${7}" \
 		status/output1.png
 
 	convert status/output1.png \
