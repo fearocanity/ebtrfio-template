@@ -45,6 +45,6 @@ jobs:
         with:
           commit_message: "stat: Processing..."
           repository: .
-          file_pattern: status/*.jpg
+          file_pattern: status/*.png
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
