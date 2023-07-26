@@ -4,7 +4,7 @@
 # Author: EBTRFIO
 # Date: Dec. 10 2022
 # Licence: None
-# Version: v1.3.9
+# Version: v1.4.0
 # ############# #
 
 # --- Dependencies --- #
@@ -128,48 +128,69 @@ scrv3(){
 	# This function solves the timings of Subs
 	# Set the current time variable
 	current_time="${1}"
-	# Scrape the Subtitles
-	# This awk syntax is pretty much hardcoded but quite genius because all this scrapings are happening in only 2 awk commands, thats why the scrapings are 100x faster than the previous versions
-	message_craft="$(
-	awk -F ',' -v curr_time_sc="${current_time}" '/Dialogue:/ {
-			split(curr_time_sc, aa, ":");
-			curr_time = aa[1]*3600 + aa[2]*60 + aa[3];
-			split($2, a, ":");
-			start_time = a[1]*3600 + a[2]*60 + a[3];
-			split($3, b, ":");
-			end_time = b[1]*3600 + b[2]*60 + b[3];
-			if (curr_time>=start_time && curr_time<=end_time) {
-				c = $0;
-				split(c, d, ",");
-				split(c, e, ",,");
-				f = d[4]","d[5]",";
-				g = (f ~ /[a-zA-Z0-9],,/) ? e[3] : e[2];
-				gsub(/\r/,"",g);
-				gsub(/   /," ",g);
-				gsub(/!([a-zA-Z0-9])/,"! \\1",g);
-				gsub(/(\\N{\\c&H727571&}|{\\c&HB2B5B2&})/,", ",g);
-				gsub(/{([^\x7d]*)}/,"",g);
-				if(g ~ /[[:graph:]]\\N/) gsub(/\\N/," ",g);
-				gsub(/\\N/,"",g);
-				gsub(/\\h/,"",g);
-				if (f ~ /[^,]*,sign/) {
-					print "【"g"】"
-				} else if (f ~ /Signs,,/) {
-					print "\""g"\""
-				} else if (f ~ /Songs[^,]*,[^,]*,/) {
-					print "『"g"』"
-				} else {
-					print g
-				}
+	# Scrape the Subtitles (only supports srt & ass/ssa)
+	if [[ "${locationsub}" =~ \.srt$ ]]; then
+		message_init="$(
+			awk -v curr_time_sc="${current_time}" -v RS="" '
+			function strip_ms(time) {
+				sub(/\.[0-9]+/, "", time)
+				return time
 			}
-		}' "${locationsub}" | \
-	awk '!a[$0]++{
-			if ($0 ~ /^【.+】$/) aa=aa $0 "\n"; else bb=bb $0 "\n"
-		} END {
-		print aa bb
-		}' | \
-	sed '/^[[:blank:]]*$/d;/^$/d'
-	)"
+			BEGIN {
+				curr_time_sc = strip_ms(curr_time_sc)
+			}
+			{
+				start_time = strip_ms(substr($2, 1, 8))
+				end_time = strip_ms(substr($4, 1, 8))
+				if (curr_time_sc >= start_time && curr_time_sc <= end_time) {
+					gsub("\n", " ")
+					gsub(/\r/, "")
+					sub(/^[0-9]+\s[0-9:,]+ --> [0-9:,]+./, "")
+					gsub(/<[^>]*>|<\/[^>]*>|{([^\x7d]*)}/, "")
+					print $0
+				}
+			}' "${locationsub}"
+		)"
+	elif [[ "${locationsub}" =~ \.ass$|\.ssa$ ]]; then
+		message_init="$(
+			awk -F ',' -v curr_time_sc="${current_time}" '/Dialogue:/ {
+				split(curr_time_sc, aa, ":");
+				curr_time = aa[1]*3600 + aa[2]*60 + aa[3];
+				split($2, a, ":");
+				start_time = a[1]*3600 + a[2]*60 + a[3];
+				split($3, b, ":");
+				end_time = b[1]*3600 + b[2]*60 + b[3];
+				if (curr_time>=start_time && curr_time<=end_time) {
+					c = $0;
+					split(c, d, ",");
+					split(c, e, ",,");
+					f = d[4]","d[5]",";
+					g = (f ~ /[a-zA-Z0-9],,/) ? e[3] : e[2];
+					gsub(/\r/,"",g);
+					gsub(/   /," ",g);
+					gsub(/!([a-zA-Z0-9])/,"! \\1",g);
+					gsub(/(\\N{\\c&H727571&}|{\\c&HB2B5B2&})/,", ",g);
+					gsub(/{([^\x7d]*)}/,"",g);
+					if (g ~ /[[:graph:]]\\N/) gsub(/\\N/," ",g);
+					gsub(/\\N/,"",g);
+					gsub(/\\h/,"",g);
+					if (f ~ /[^,]*,sign/) {
+						print "【"g"】"
+					} else if (f ~ /Signs,,/) {
+						print "\""g"\""
+					} else if (f ~ /Songs[^,]*,[^,]*,/) {
+						print "『"g"』"
+					} else {
+						print g
+					}
+				}
+			}' "${locationsub}"
+		)"
+	else
+		printf '%s\n' "failed to post subtitles, unsupported file type"
+	fi
+	
+	message_craft="$(awk '!a[$0]++{if ($0 ~ /^【.+】$/) aa=aa $0 "\n"; else bb=bb $0 "\n"} END {print aa bb}' <<< "${message_init}" | sed '/^[[:blank:]]*$/d;/^$/d')"
 	[[ "${message_craft}" =~ ^『.*』$ ]] && is_opedsong="1"
 	[[ -z "${message_craft}" ]] && is_empty="1" || is_empty="0"
 	unset current_time
@@ -197,18 +218,19 @@ if [[ -e "${log}" ]] && grep -qE "\[√\] Frame: ${prev_frame}, Episode ${episod
 fi
 
 for i in "${season}" "${episode}" "${total_frame}"; do
-		[[ -z "${i}" ]] && { printf '%s\n' "posting error: lack of information (message variable)" ; failed ;} 
+		[[ -z "${i}" ]] && { printf '%s\n' "posting error: lack of basic information (message variable)" ; failed ;} 
 done
 
-# This is where you can change your post captions and own format (that one below is the default)
-message="Season ${season}, Episode ${episode}, Frame ${prev_frame} out of ${total_frame}"
-
-# Call the Scraper of Subs
-if [[ "${sub_posting}" = "1" ]] && [[ -e "${locationsub}" ]] && [[ -n "$(<"${locationsub}")" ]]; then
-	scrv3 "$(nth "${prev_frame}")"
+# Get frame time-stamp
+if [[ -n "${vid_fps}" ]] && [[ -n "${vid_totalfrm}" ]] && [[ -n "${total_frame}" ]]; then
+	frame_timestamp="$(nth "${prev_frame}")"
+	# Call the Scraper of Subs
+	if [[ -e "${locationsub}" ]] && [[ -n "$(<"${locationsub}")" ]]; then
+		scrv3 "${frame_timestamp}"
+	fi
 fi
 
-# Compare if the Subs are OP/ED Songs or Not
+# Compare if the Subs are OP/ED Songs or Not (only works on ass/ssa subtitles)
 if [[ "${is_opedsong}" = "1" ]]; then
 	message_comment="Lyrics:
 ${message_craft}"
@@ -216,6 +238,9 @@ else
 	message_comment="Subtitles:
 ${message_craft}"
 fi
+
+# refer in config.conf
+message="$(eval "printf '%s' \"$(sed -E 's_\{\\n\}_\n_g;s_(\{[^\x7d]*\})_\$\1_g' <<< "${message}"\")")"
 
 # Post images to Timeline of Page
 response="$(curl -sfLX POST --retry 2 --retry-connrefused --retry-delay 7 "${graph_url_main}/me/photos?access_token=${token}&published=1" -F "message=${message}" -F "source=@${frames_location}/frame_${prev_frame}.jpg")" || failed "${prev_frame}" "${episode}"
@@ -235,7 +260,7 @@ if [[ "${rand_post}" = "1" ]]; then
 fi
 
 # Comment the Subtitles on a post created on timeline
-if [[ -e "${locationsub}" ]]; then
+if [[ "${sub_posting}" = "1" ]] && [[ -e "${locationsub}" ]]; then
 	sleep "${delay_action}" # Delay
 	[[ "${is_empty}" = "1" ]] || curl -sfLX POST --retry 2 --retry-connrefused --retry-delay 7 "${graph_url_main}/v16.0/${id}/comments?access_token=${token}" --data-urlencode "message=${message_comment}" -o /dev/null
 fi

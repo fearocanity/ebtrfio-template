@@ -59,6 +59,6 @@ jobs:
         with:
           commit_message: "stat: Posted!!"
           repository: .
-          file_pattern: README.md fb/* frameposter.sh frame_main.sh status/* 
+          file_pattern: README.md fb/* frameposter.sh counter*.txt frame_main.sh status/* 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

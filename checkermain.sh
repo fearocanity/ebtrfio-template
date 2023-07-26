@@ -35,12 +35,12 @@ sub_check(){
 		if [[ -z "${subtitle_file}" ]]; then
 			format_table "subtitle_file" "$(format_err "Variable is empty")" && err_state="1"
 			printf '\e[31mERROR\e[0m - %s\n' "Variable is empty" >&2
-		elif [[ ! -e "${subtitle_file}" ]]; then
+		elif [[ ! -e ./fb/"${subtitle_file}" ]]; then
 			format_table "subtitle_file" "$(format_err "File not found")" "subtitle_file" && err_state="1"
 			printf '\e[31mERROR\e[0m - %s\n' "File not found" >&2
 		elif [[ -z "$(<./fb/"${subtitle_file}")" ]]; then
-			format_table "subtitle_file" "$(format_err "File not found")" && err_state="1"
-			printf '\e[31mERROR\e[0m - %s\n' "File not found" >&2
+			format_table "subtitle_file" "$(format_err "File is empty")" && err_state="1"
+			printf '\e[31mERROR\e[0m - %s\n' "File is empty" >&2
 		else
 			format_table "subtitle_file" "$(format_noerr "Passed")"
 		fi
@@ -86,7 +86,7 @@ token_check(){
 	fi
 }
 
-checkif season episode total_frame fph mins delay_action
+checkif season episode img_fps total_frame fph mins delay_action
 sub_check
 frames_check
 token_check "${token}" "${gif_token}"
