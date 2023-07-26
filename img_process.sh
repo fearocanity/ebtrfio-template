@@ -3,23 +3,69 @@ prev_frame="$(<./fb/frameiterator)"
 [[ -e ./config.conf ]] && . ./config.conf
 [[ -e status/status.jpg ]] && : > status/status.jpg
 
+temp_cleanup(){
+	rm status/output.png status/output1.png
+}
+
+create_image(){
+	theme="${4}"
+	percentage="$((${1} * 100 / ${3}))"
+	percentage_end="$((${2} * 100 / ${3}))"
+	width="350"
+	progress_width="$(((width * percentage / 100) - 10))"
+	progress_width_end="$(((width * percentage_end / 100) - 10))"
+
+	convert -size "${width}x40" xc:none \
+		-stroke "#373737" -strokewidth 2 \
+		-fill "#2F2F2F" -draw "roundrectangle 10,10,$((width-10)),20,5,5" \
+		-stroke none \
+		-fill "${6}" -draw "roundrectangle 10,10,${progress_width_end},20,5,5" \
+		-fill "${theme}" -draw "roundrectangle 10,10,${progress_width},20,5,5" \
+		status/output.png
+
+	convert -size 500x200 xc:none \
+		-stroke "${theme}" -strokewidth 2 \
+		-fill "#333333" -draw "roundrectangle 10,10,490,190,40,40" \
+		-gravity west \
+		-stroke none \
+		\( status/output.png \
+			-geometry +85+40 \
+		\) -composite \
+		-gravity center \
+		-fill "#FFFFFF" -font status/fonts/mona_b.ttf -pointsize 35 -annotate +0-45 "${5}" \
+		-font status/fonts/mona_bb.ttf -pointsize 18 -interline-spacing "5" -annotate +0-0 "Frame: ${1}-${2}" \
+		-font status/fonts/mona_bb.ttf -pointsize 12 -interline-spacing "5" -annotate -180+36 "${percentage}%" \
+		-font mona_bb.ttf -pointsize 10 -interline-spacing "5" -annotate -0+60 "${7}" \
+		status/output1.png
+
+	convert status/output1.png \
+		\( +clone \
+			-background "${theme}" \
+			-shadow 50x50+0+0 \
+		\) +swap \
+		-background none \
+		-layers merge \
+		+repage status/status.png
+}
+
 case "${1}" in
 	in_progress)
 		shift 1
-		time_started="$(TZ="${sys_timezone}" date)"
 		lim_frame="$((prev_frame+fph-1))"
 		[[ "${lim_frame}" -gt "${total_frame}" ]] && lim_frame="${total_frame}"
-		convert -fill white -background "#a26b03" -gravity center -pointsize 72 -font "trebuc.ttf" label:"\ [~] Frame ${prev_frame}-${lim_frame} was currently posting in progress " -pointsize 25 label:"Time started: ${time_started}" -append -bordercolor "#a26b03" -border 30 status/status.jpg
+		create_image "${prev_frame}" "${lim_frame}" "${total_frame}" "#a26b03" "Posting in Progress..." "darkgreen" "Time started: ${time_started}"
 		;;
 	failed)
 		shift 1
 		lim_frame="$((prev_frame+fph-1))"
 		[[ "${lim_frame}" -gt "${total_frame}" ]] && lim_frame="${total_frame}"
-		convert -fill white -background "darkred" -gravity center -pointsize 72 -font "trebuc.ttf" label:"\ [X] Frame ${prev_frame}-${lim_frame} failed to post! " -pointsize 25 label:"Time started: ${1}" -append -bordercolor "darkred" -border 30 status/status.jpg
+		create_image "${prev_frame}" "${lim_frame}" "${total_frame}" "darkred" "Failed to Post..." "#565656" "Time started: ${1}"
 		exit 1
 		;;
 	success)
 		shift 1
-		convert -fill white -background "darkgreen" -gravity center -pointsize 72 -font "trebuc.ttf" label:"\ [√] Frame ${1}-${2} was posted " -pointsize 25 label:"Time started: ${3}\nTime ended: ${4}" -append -bordercolor "darkgreen" -border 30 status/status.jpg
+		create_image "${1}" "${2}" "${total_frame}" "darkgreen" "Successfully Posted..." "darkgreen" "Time started: ${3}\nTime ended: ${4}"
 		;;
 esac
+
+temp_cleanup || true
