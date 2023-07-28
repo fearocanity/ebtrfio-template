@@ -2,19 +2,24 @@
 
 Please provide a brief description of your changes here.
 
-## Motivation and Context
-
-Explain why you made these changes and what problem they solve.
-
-## Changes Made
-
-Describe the changes you made in detail. If you added new features, include usage examples.
-
-## Related Issue
-
-If your pull request is related to an open issue, please link to the issue here.
-
 ## Checklist
+
+Setupping Frames:
+- [ ] I Have disabled the `actions/init-banner`.
+- [ ] I Have changed the `frameiterator` file to `1`.
+- [ ] I Have setupped the `config.conf`.
+- [ ] I Have deleted the old frames and replaced the new frames.
+- [ ] I Have created a new Album and get the Album ID (optional).
+- [ ] I Have setupped the subtitles (optional).
+
+---
+
+`QA`: After you pushed the changes:
+- [ ] Have you enabled `actions/init-banner`?
+- [ ] I Have confimed it is working.
+- [ ] Is it visible to public?
+
+## Checklist for Feats
 
 Please review and complete these items before submitting your pull request:
 
@@ -23,11 +28,3 @@ Please review and complete these items before submitting your pull request:
 - [ ] My code is well-formatted and complies with the ShellCheck standards.
 - [ ] I have updated the documentation (if applicable).
 - [ ] I have read and agree to the [code of conduct](CODE_OF_CONDUCT.md) and [contribution guidelines](CONTRIBUTING.md).
-
-## Screenshots (if applicable)
-
-Please provide any screenshots or visual representations of your changes here.
-
-## Additional Notes (if applicable)
-
-Please provide any additional notes or comments here.
