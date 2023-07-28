@@ -66,7 +66,7 @@ case "${1}" in
 		;;
 	success)
 		shift 1
-		create_image "${1}" "${2}" "${total_frame}" "darkgreen" "Successfully Posted..." "#565656" "Time started: ${3}\nTime ended: ${4}" "true"
+		create_image "${1}" "${2}" "${total_frame}" "darkgreen" "Successfully Posted..." "darkgreen" "Time started: ${3}\nTime ended: ${4}" "true"
 		;;
 esac
 
