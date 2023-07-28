@@ -44,7 +44,7 @@ This section tells how to make it work. In more detailed way.
   - Grant Permissions for token, Click `Add a Permission`, Then click `Events Groups Pages` click all the following
   ![Screenshot](https://user-images.githubusercontent.com/93582751/225804307-1b147266-4fc4-4b13-b35c-630ab2d70edb.png)
   > [!NOTE]
-  > The scopes should be color `black` as the image shows, If it shows color `green` it means it's not yet applied to the token. (Repeat the proccess if the next step doesn't work)
+  > The scopes should be color <sub>![#000000](https://placehold.co/15x15/000000/000000.png)</sub> `black` as the image shows, If it shows color <sub>![#32CD32](https://placehold.co/15x15/32CD32/32CD32.png)</sub> `green` it means it's not yet applied to the token. (Repeat the proccess if the next step doesn't work)
   - Click on `User Token` and choose the page you want.<p>
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221355474-107eaf3b-c9f7-4179-81cf-4cb4b58f396d.png)
   - There's gonna popup there, just give the App Permissions and Authorize it.
@@ -247,6 +247,7 @@ This section tells how to make it work. In more detailed way.
   > - By Default, the bot will automatically run every 2 hrs. <sup>(This is our Standard Interval posting)</sup>
   > - We recommend to use `Use this Template` button rather than forking this repository.
   > - We recommend Creating a Pull Request when you're setupping frames for next episode/series to track your changes and guides you on what steps you will take.
+  > - Make sure not to push something in master while the BOT is running. Wait it to be finished first to avoid duplicatiom issues.
   > - Keep your repository updated with [parent repository](https://github.com/fearocanity/ebtrfio-template) for fixes and security measure updates.
   > - When proceeding to a new Episode, you should create a Pull Request to your repo. <sup>(Don't forget `frameiterator` to change back to `1`)</sup>
   > - Use `action/repo-checker` as your basis for checking errors and misconfiguration.
