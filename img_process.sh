@@ -53,9 +53,10 @@ create_image(){
 case "${1}" in
 	in_progress)
 		shift 1
+  		time_started="$(TZ="${sys_timezone}" date)"
 		lim_frame="$((prev_frame+fph-1))"
 		[[ "${lim_frame}" -gt "${total_frame}" ]] && lim_frame="${total_frame}"
-		create_image "${prev_frame}" "${lim_frame}" "${total_frame}" "#a26b03" "Posting in Progress..." "#565656" "Time started: ${1}"
+		create_image "${prev_frame}" "${lim_frame}" "${total_frame}" "#a26b03" "Posting in Progress..." "#565656" "Time started: ${time_started}"
 		;;
 	failed)
 		shift 1
