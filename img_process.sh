@@ -14,7 +14,9 @@ create_image(){
 	width="350"
 	progress_width="$(((width * percentage / 100) - 10))"
 	progress_width_end="$(((width * percentage_end / 100) - 10))"
-
+ 
+	[[ "${8}" = "true" ]] && percentage="${percentage_end}"
+ 
 	convert -size "${width}x40" xc:none \
 		-stroke "#373737" -strokewidth 2 \
 		-fill "#2F2F2F" -draw "roundrectangle 10,10,$((width-10)),20,5,5" \
@@ -64,7 +66,7 @@ case "${1}" in
 		;;
 	success)
 		shift 1
-		create_image "${1}" "${2}" "${total_frame}" "darkgreen" "Successfully Posted..." "#565656" "Time started: ${3}\nTime ended: ${4}"
+		create_image "${1}" "${2}" "${total_frame}" "darkgreen" "Successfully Posted..." "#565656" "Time started: ${3}\nTime ended: ${4}" "true"
 		;;
 esac
 
