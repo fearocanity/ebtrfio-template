@@ -40,6 +40,6 @@ If you encounter any issues while working on the project, please report them in 
 
 ## License
 
-This project is licensed under the [Unlicense](LICENSE).
+This project is licensed under the [MIT License](LICENSE).
 
 Thanks for contributing!
