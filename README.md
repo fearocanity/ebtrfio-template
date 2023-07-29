@@ -43,7 +43,8 @@ This section tells how to make it work. In more detailed way.
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221355248-9e7de41c-a9c9-46d6-9b51-b4a084c3bddc.png)
   - Grant Permissions for token, Click `Add a Permission`, Then click `Events Groups Pages` click all the following
   ![Screenshot](https://user-images.githubusercontent.com/93582751/225804307-1b147266-4fc4-4b13-b35c-630ab2d70edb.png)
-  > **Note**: The scopes should be color `black` as the image shows, If it shows color `green` it means it's not yet applied to the token. (Repeat the proccess if the next step doesn't work)
+  > [!NOTE]
+  > The scopes should be color `black` as the image shows, If it shows color `green` it means it's not yet applied to the token. (Repeat the proccess if the next step doesn't work)
   - Click on `User Token` and choose the page you want.<p>
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221355474-107eaf3b-c9f7-4179-81cf-4cb4b58f396d.png)
   - There's gonna popup there, just give the App Permissions and Authorize it.
@@ -76,7 +77,8 @@ This section tells how to make it work. In more detailed way.
   ```
   iwr -useb get.scoop.sh | iex
   ```
-  > **Note**: If theres an error occured, just run the command below. <sup>(Disregard the command below if theres no error appeared)</sup>
+  > [!NOTE]
+  > If theres an error occured, just run the command below. <sup>(Disregard the command below if theres no error appeared)</sup>
   > ```
   > Set-ExecutionPolicy RemoteSigned -scope CurrentUser
   > ```
@@ -121,7 +123,8 @@ This section tells how to make it work. In more detailed way.
   cd ..
   git clone https://github.com/{your_username_here}/{repo_name}
   ```
-  > **Note**: Make sure that you already created a repository for this template. `{repo_name}` stands for the name of your repo you created for this template
+  > [!IMPORTANT]
+  > Make sure that you already created a repository for this template. `{repo_name}` stands for the name of your repo you created for this template
   
   Now, Run this command:
   ```
@@ -185,7 +188,8 @@ This section tells how to make it work. In more detailed way.
   
   ### How to make your Content Public
   
-  > **Note**: This is an **Important Step** because all the contents you post will not be shown to public if it not set to `Live`
+  > [!IMPORTANT]
+  > All the contents you post will not be shown to public if it not set to `Live`
   
   <details>
   <summary>Click Here to Show</summary><p>
@@ -213,7 +217,8 @@ This section tells how to make it work. In more detailed way.
   - Click on `init banner`, And click `Run Workflow`<p>
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221397447-13ec2f97-6830-4600-87a1-390f7f473d5b.png)
   
-   > **Warning**: We prefer not doing this <sup>(The BOT is already running)</sup>, because it will cause to run the workflow twice when the automatic run was executed. it'll cause duplication. Instead do [Manually Disable Workflow](#how-to-manually-disable-the-posting)
+   > [!WARNING]
+   > We prefer not doing this <sup>(The BOT is already running)</sup>, because it will cause to run the workflow twice when the automatic run was executed. it'll cause duplication. Instead do [Manually Disable Workflow](#how-to-manually-disable-the-posting)
 
   </details>
   
@@ -228,27 +233,35 @@ This section tells how to make it work. In more detailed way.
   - Click on `init banner`, and click the three dots `···`. Then finally, click on `Disable Workflow`<p>
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221398101-a13b6416-dbb9-4cfa-bb34-3a95b330f210.png)
     
-  > **Note**: Enabling it pretty much the same procedure, It will appear the enable button at the top.
+  > [!NOTE]
+  > Enabling it pretty much the same procedure, It will appear the enable button at the top.
   </details>
 
   ## Notes and Tips
   <table>
   <tr>
   <td>
+  <div align="center">
 
-  - By Default, the bot will automatically run every 2 hrs. <sup>(This is our Standard Interval posting)</sup>
-  - We recommend to use `Use this Template` button rather than forking this repository.
-  - Keep your repository updated with [parent repository](https://github.com/fearocanity/ebtrfio-template) for fixes and security measure updates.
-  - When proceeding to a new Episode, you should create a Pull Request to your repo. <sup>(Don't forget `frameiterator` to change back to `1`)</sup>
-  - Use `action/repo-checker` as your basis for checking errors and misconfiguration.
-  - Recommended source: `Erai-Raws`, `Nyaa`.
-  - If you need help, just message us on our [<sub><img src="https://camo.githubusercontent.com/8f245234577766478eaf3ee72b0615e99bb9ef3eaa56e1c37f75692811181d5c/68747470733a2f2f6564656e742e6769746875622e696f2f537570657254696e7949636f6e732f696d616765732f7376672f66616365626f6f6b2e737667" height="20"></sub> Facebook](https://facebook.com/btrframes) page. Or create an Issue/Discussion thread here.
-  - When using a VPS/Droplet server, just clone this repository and paste all your frames to `frames` directory, also the tokens are gonna be in `secret.sh` file.
-  > **Warning**: We're not responsible whatever happens to your Facebook account. Just to be safe, I prefer using an dedicated account for the page, else you can use your main but use it with care. *Use at your own risk*
+  > [!NOTE]
+  > - By Default, the bot will automatically run every 2 hrs. <sup>(This is our Standard Interval posting)</sup>
+  > - We recommend to use `Use this Template` button rather than forking this repository.
+  > - We recommend Creating a Pull Request when you're setupping frames for next episode/series to track your changes and guides you on what steps you will take.
+  > - Make sure not to push something in master while the BOT is running. Wait it to be finished first to avoid duplicatiom issues.
+  > - Keep your repository updated with [parent repository](https://github.com/fearocanity/ebtrfio-template) for fixes and security measure updates.
+  > - When proceeding to a new Episode, you should create a Pull Request to your repo. <sup>(Don't forget `frameiterator` to change back to `1`)</sup>
+  > - Use `action/repo-checker` as your basis for checking errors and misconfiguration.
+  > - Recommended source: `Erai-Raws`, `Nyaa`.
+  > - If you need help, just message us on our [<sub><img src="https://camo.githubusercontent.com/8f245234577766478eaf3ee72b0615e99bb9ef3eaa56e1c37f75692811181d5c/68747470733a2f2f6564656e742e6769746875622e696f2f537570657254696e7949636f6e732f696d616765732f7376672f66616365626f6f6b2e737667" height="20"></sub> Facebook](https://facebook.com/btrframes) page. Or create an Issue/Discussion thread here.
+  > - When using a VPS/Droplet server, just clone this repository and paste all your frames to `frames` directory, also the tokens are gonna be in `secret.sh` file.
 
+  </div>
   </table>
   </tr>
   </td>
+
+  > [!WARNING]
+  > We're not responsible whatever happens to your Facebook account. Just to be safe, I prefer using an dedicated account for the page, else you can use your main but use it with care. *Use at your own risk*
 
 ## Contributing
 <div align="center">

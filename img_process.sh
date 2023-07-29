@@ -14,7 +14,9 @@ create_image(){
 	width="350"
 	progress_width="$(((width * percentage / 100) - 10))"
 	progress_width_end="$(((width * percentage_end / 100) - 10))"
-
+ 
+	[[ "${8}" = "true" ]] && percentage="${percentage_end}"
+ 
 	convert -size "${width}x40" xc:none \
 		-stroke "#373737" -strokewidth 2 \
 		-fill "#2F2F2F" -draw "roundrectangle 10,10,$((width-10)),20,5,5" \
@@ -29,13 +31,13 @@ create_image(){
 		-gravity west \
 		-stroke none \
 		\( status/output.png \
-			-geometry +85+40 \
+			-geometry +85+25 \
 		\) -composite \
 		-gravity center \
 		-fill "#FFFFFF" -font status/fonts/mona_b.ttf -pointsize 35 -annotate +0-45 "${5}" \
-		-font status/fonts/mona_bb.ttf -pointsize 18 -interline-spacing "5" -annotate +0-0 "Frame: ${1}-${2}" \
-		-font status/fonts/mona_bb.ttf -pointsize 12 -interline-spacing "5" -annotate -180+36 "${percentage}%" \
-		-font status/fonts/mona_bb.ttf -pointsize 10 -interline-spacing "5" -annotate -0+60 "${7}" \
+		-font status/fonts/mona_bb.ttf -pointsize 18 -interline-spacing "5" -annotate +0-10 "Frame: ${1}-${2}" \
+		-font status/fonts/mona_bb.ttf -pointsize 12 -interline-spacing "5" -annotate -180+21 "${percentage}%" \
+		-font status/fonts/mona_bb.ttf -pointsize 10 -interline-spacing "5" -annotate -0+57 "${7}" \
 		status/output1.png
 
 	convert status/output1.png \
@@ -51,9 +53,10 @@ create_image(){
 case "${1}" in
 	in_progress)
 		shift 1
+  		time_started="$(TZ="${sys_timezone}" date)"
 		lim_frame="$((prev_frame+fph-1))"
 		[[ "${lim_frame}" -gt "${total_frame}" ]] && lim_frame="${total_frame}"
-		create_image "${prev_frame}" "${lim_frame}" "${total_frame}" "#a26b03" "Posting in Progress..." "darkgreen" "Time started: ${1}"
+		create_image "${prev_frame}" "${lim_frame}" "${total_frame}" "#a26b03" "Posting in Progress..." "#565656" "Time started: ${time_started}"
 		;;
 	failed)
 		shift 1
@@ -64,7 +67,7 @@ case "${1}" in
 		;;
 	success)
 		shift 1
-		create_image "${1}" "${2}" "${total_frame}" "darkgreen" "Successfully Posted..." "darkgreen" "Time started: ${3}\nTime ended: ${4}"
+		create_image "${1}" "${2}" "${total_frame}" "darkgreen" "Successfully Posted..." "darkgreen" "Time started: ${3}\nTime ended: ${4}" "true"
 		;;
 esac
 
