@@ -30,15 +30,26 @@ jobs:
               exit 1
           fi
 
-      - name: "check latest || dispatches if fails"
+      - name: "check latest || (not implemented) dispatches if fails"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          LATEST_COMMIT="$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/commits/${{ github.ref }}" | jq -r .sha)"
+          LATEST_COMMIT="$(curl -s -H "Authorization: Bearer ${GITHUB_TOKEN}" "https://api.github.com/repos/${{ github.repository }}/commits/${{ github.ref }}" | jq -r .sha)"
           if [ "${LATEST_COMMIT}" != "${GITHUB_SHA}" ]; then
-            printf '%s\n' "Current commit is not the latest." >&2
-            curl -H "Authorization: Bearer ${GITHUB_TOKEN}" -H "Accept: application/vnd.github.v3+json" -X POST -d '{"ref":"'"${{ github.ref }}"'","inputs":{}}' "https://api.github.com/repos/${{ github.repository }}/actions/workflows/process.yml/dispatches"
+             printf '%s\n' "Current commit is not the latest." >&2
+             # curl -H "Authorization: Bearer ${GITHUB_TOKEN}" -H "Accept: application/vnd.github.v3+json" -X POST -d '{"ref":"'"${{ github.ref }}"'","inputs":{}}' "https://api.github.com/repos/${{ github.repository }}/actions/workflows/process.yml/dispatches"
             exit 1
+          fi
+       
+      - name: "check if repo checker have succeed"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          conclusion="$(curl -s -X GET "https://api.github.com/repos/${{ github.repository }}/actions/workflows/repo-checker.yml/runs" -H "Authorization: Bearer ${GITHUB_TOKEN}" | jq -r .workflow_runs[1].conclusion)"
+          if [[ "${conclusion}" = "failure" ]]; then
+              printf '%s\n' "failed due to repo checker failure." >&2
+              curl -H "Authorization: Bearer ${GITHUB_TOKEN}" -H "Accept: application/vnd.github.v3+json" -X POST -d '{"ref":"'"${{ github.ref }}"'","inputs":{}}' "https://api.github.com/repos/${{ github.repository }}/actions/workflows/repo-checker.yml/dispatches" -o /dev/null
+              exit 1
           fi
 
   sample-bot:
