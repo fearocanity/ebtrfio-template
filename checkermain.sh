@@ -71,7 +71,7 @@ frames_check(){
 
 token_check(){
 	check_name="$(curl -sLf "${graph_url_main}/me?fields=name&access_token=${1}" | jq -r .name)" || true
-	if [[ "${check_name}" = "${page_name}" ]]; then
+	if [[ -n "{page_name}" ]] && [[ "${check_name}" = "${page_name}" ]]; then
 		format_table "fb_token" "$(format_noerr "Token is Working")"
 	else
 		format_table "fb_token" "$(format_err "An error occured")" && err_state="1"
