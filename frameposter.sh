@@ -81,7 +81,7 @@ create_gif(){
 	url_gif="$(curl -sLfX POST --retry 3 --retry-connrefused --retry-delay 7 -F "api_key=${giphy_token}" -F "tags=${giphy_tags}" -F "file=@${vidgif_location}" "https://upload.giphy.com/v1/gifs" | sed -nE 's_.*"id":"([^\"]*)"\}.*_\1_p')"
 	[[ -z "${url_gif}" ]] && return 1 || url_gif="https://giphy.com/gifs/${url_gif}"
 
-	curl -sfLX POST "${graph_url_main}/v16.0/${id}/comments?access_token=${token}" -d "message=GIF created from last 10 frames (${1}-${2})" -d "attachment_share_url=${url_gif}" -o /dev/null
+	curl -sfLX POST "${graph_url_main}/${fbapi_ver}/${id}/comments?access_token=${token}" -d "message=GIF created from last 10 frames (${1}-${2})" -d "attachment_share_url=${url_gif}" -o /dev/null
 }
 
 rand_func(){ od -vAn -N2 -tu2 < /dev/urandom | tr -dc '0-9' ;}
@@ -97,7 +97,7 @@ random_crop(){
 	crop_y="$(($(rand_func) % (image_height - crop_height)))"
 	convert "${1}" -crop "${crop_width}x${crop_height}+${crop_x}+${crop_y}" "${rc_location}"
 	msg_rc="Random Crop. [${crop_width}x${crop_height} ~ X: ${crop_x}, Y: ${crop_y}]"
-	curl -sfLX POST --retry 2 --retry-connrefused --retry-delay 7 "${graph_url_main}/v16.0/${id}/comments?access_token=${token}" -F "message=${msg_rc}" -F "source=@${rc_location}" -o /dev/null
+	curl -sfLX POST --retry 2 --retry-connrefused --retry-delay 7 "${graph_url_main}/${fbapi_ver}/${id}/comments?access_token=${token}" -F "message=${msg_rc}" -F "source=@${rc_location}" -o /dev/null
 }
 
 nth(){
@@ -116,8 +116,11 @@ nth(){
 
 	# This code below is standard, without tweaks.
 	sec="$(bc -l <<< "scale=11; ${vid_totalfrm} / ${total_frame}")"
-	sec="$(bc -l <<< "scale=2; (${t:-1} - ${frm_delay}) * ${sec} / ${vid_fps}")" secfloat="${sec#*.}" sec="${sec%.*}" sec="${sec:-0}"
-
+	sec="$(bc -l <<< "scale=2; x = (${t:-1} - ${frm_delay}) * ${sec} / ${vid_fps};"' if (length (x) == scale (x) && x != 0) { if (x < 0) print "-",0,-x else print 0,x } else print x')"
+	if grep -qE '^-' <<< "${sec}"; then
+		sec="$(bc -l <<< "scale=2; x = ${t:-1} * ${sec} / ${vid_fps};"' if (length (x) == scale (x) && x != 0) { if (x < 0) print "-",0,-x else print 0,x } else print x')"
+	fi
+	secfloat="${sec#*.}" sec="${sec%.*}" sec="${sec:-0}"
 	[[ "${secfloat}" =~ ^0[8-9]$ ]] && secfloat="${secfloat#0}"
 	secfloat="${secfloat:-0}"
 	printf '%01d:%02d:%02d.%02d' "$((sec / 60 / 60 % 60))" "$((sec / 60 % 60))" "$((sec % 60))" "${secfloat}"
@@ -262,7 +265,7 @@ fi
 # Comment the Subtitles on a post created on timeline
 if [[ "${sub_posting}" = "1" ]] && [[ -e "${locationsub}" ]]; then
 	sleep "${delay_action}" # Delay
-	[[ "${is_empty}" = "1" ]] || curl -sfLX POST --retry 2 --retry-connrefused --retry-delay 7 "${graph_url_main}/v16.0/${id}/comments?access_token=${token}" --data-urlencode "message=${message_comment}" -o /dev/null
+	[[ "${is_empty}" = "1" ]] || curl -sfLX POST --retry 2 --retry-connrefused --retry-delay 7 "${graph_url_main}/${fbapi_ver}/${id}/comments?access_token=${token}" --data-urlencode "message=${message_comment}" -o /dev/null
 fi
 
 # Addons, GIF posting
