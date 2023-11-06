@@ -117,7 +117,7 @@ nth(){
 	# This code below is standard, without tweaks.
 	sec="$(bc -l <<< "scale=11; ${vid_totalfrm} / ${total_frame}")"
 	sec="$(bc -l <<< "scale=2; x = (${t:-1} - ${frm_delay}) * ${sec} / ${vid_fps};"' if (length (x) == scale (x) && x != 0) { if (x < 0) print "-",0,-x else print 0,x } else print x')"
-	if grep -qE '^-' <<< "${sec}"; then
+	if [ "${2}" = "timestamp" ] || grep -qE '^-' <<< "${sec}"; then
 		sec="$(bc -l <<< "scale=2; x = ${t:-1} * ${sec} / ${vid_fps};"' if (length (x) == scale (x) && x != 0) { if (x < 0) print "-",0,-x else print 0,x } else print x')"
 	fi
 	secfloat="${sec#*.}" sec="${sec%.*}" sec="${sec:-0}"
@@ -226,7 +226,7 @@ done
 
 # Get frame time-stamp
 if [[ -n "${vid_fps}" ]] && [[ -n "${vid_totalfrm}" ]] && [[ -n "${total_frame}" ]]; then
-	frame_timestamp="$(nth "${prev_frame}")"
+	frame_timestamp="$(nth "${prev_frame}" "timestamp")"
 	# Call the Scraper of Subs
 	if [[ -e "${locationsub}" ]] && [[ -n "$(<"${locationsub}")" ]]; then
 		scrv3 "${frame_timestamp}"
