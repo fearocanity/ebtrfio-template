@@ -135,17 +135,16 @@ scrv3(){
 	if [[ "${locationsub}" =~ \.srt$ ]]; then
 		message_init="$(
 			awk -v curr_time_sc="${current_time}" -v RS="" '
-			function strip_ms(time) {
-				sub(/\.[0-9]+/, "", time)
-				return time
-			}
-			BEGIN {
-				curr_time_sc = strip_ms(curr_time_sc)
+			function m(t){
+				gsub(/,/,".",t)
+				split(t, a, ":")
+				return a[1]*3600 + a[2]*60 + a[3]
 			}
 			{
-				start_time = strip_ms(substr($2, 1, 8))
-				end_time = strip_ms(substr($4, 1, 8))
-				if (curr_time_sc >= start_time && curr_time_sc <= end_time) {
+				curr_time = m(curr_time_sc)
+				start_time = m(substr($2, 1, 12))
+				end_time = m(substr($4, 1, 12))
+				if (curr_time >= start_time && curr_time <= end_time){
 					gsub("\n", " ")
 					gsub(/\r/, "")
 					sub(/^[0-9]+\s[0-9:,]+ --> [0-9:,]+./, "")
@@ -156,27 +155,30 @@ scrv3(){
 		)"
 	elif [[ "${locationsub}" =~ \.ass$|\.ssa$ ]]; then
 		message_init="$(
-			awk -F ',' -v curr_time_sc="${current_time}" '/Dialogue:/ {
-				split(curr_time_sc, aa, ":");
-				curr_time = aa[1]*3600 + aa[2]*60 + aa[3];
-				split($2, a, ":");
-				start_time = a[1]*3600 + a[2]*60 + a[3];
-				split($3, b, ":");
-				end_time = b[1]*3600 + b[2]*60 + b[3];
-				if (curr_time>=start_time && curr_time<=end_time) {
+			awk -F ',' -v curr_time_sc="${current_time}" '
+			function m(t){
+				split(t, a, ":");
+				return a[1]*3600 + a[2]*60 + a[3]
+				delete a
+			}
+			/Dialogue:/ {
+				curr_time = m(curr_time_sc)
+				start_time = m($2)
+				end_time = m($3)
+				if (curr_time >= start_time && curr_time <= end_time) {
 					c = $0;
-					split(c, d, ",");
-					split(c, e, ",,");
-					f = d[4]","d[5]",";
-					g = (f ~ /[a-zA-Z0-9],,/) ? e[3] : e[2];
-					gsub(/\r/,"",g);
-					gsub(/   /," ",g);
-					gsub(/!([a-zA-Z0-9])/,"! \\1",g);
-					gsub(/(\\N{\\c&H727571&}|{\\c&HB2B5B2&})/,", ",g);
-					gsub(/{([^\x7d]*)}/,"",g);
-					if (g ~ /[[:graph:]]\\N/) gsub(/\\N/," ",g);
-					gsub(/\\N/,"",g);
-					gsub(/\\h/,"",g);
+					split(c, d, ",")
+					split(c, e, ",,")
+					f = d[4]","d[5]","
+					g = (f ~ /[a-zA-Z0-9],,/) ? e[3] : e[2]
+					gsub(/\r/,"",g)
+					gsub(/   /," ",g)
+					gsub(/!([a-zA-Z0-9])/,"! \\1",g)
+					gsub(/(\\N{\\c&H727571&}|{\\c&HB2B5B2&})/,", ",g)
+					gsub(/{([^\x7d]*)}/,"",g)
+					if (g ~ /[[:graph:]]\\N/) gsub(/\\N/," ",g)
+					gsub(/\\N/,"",g)
+					gsub(/\\h/,"",g)
 					if (f ~ /[^,]*,sign/) {
 						print "【"g"】"
 					} else if (f ~ /Signs,,/) {
