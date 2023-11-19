@@ -4,7 +4,7 @@
 # Author: EBTRFIO
 # Date: Dec. 10 2022
 # Licence: None
-# Version: v1.4.0
+# Version: v1.5.0
 # ############# #
 
 # --- Dependencies --- #
@@ -105,20 +105,20 @@ nth(){
 	#
 	# You need to get the exact Frame Rate of a video
 	t="${1/[!0-9]/}"
-	# Old Formula: {current_frame} * ({2fps}/{frame_rate}) / {frame_rate} = {total_secs}
+	# Old Formula: {current_frame} * ({vid_totalframe} / {total_frame}) / {frame_rate} = {total_secs}
+	# Ex: (1532 - 1) * 7.98475609756 / 23.93 = 511.49
 	# Note: Old formula is innaccurate
 	#
-	# New Formula: {current_frame} * ({vid_totalframe} / {total_frame}) / {frame_rate} = {total_secs}
-	# Ex: (1532 - 1) * 7.98475609756 / 23.93 = 511.49
-	for i in "${vid_totalfrm}" "${total_frame}" "${vid_fps}"; do
+	# New Formula (most precise): {current_frame} / {img_fps} = {total_secs}
+	# Ex: 1532 * 3.5 = 438.57
+	for i in "${t}" "${img_fps}"; do
 		[[ -z "${i}" ]] && { printf '%s\n' "posting error: lack of information (\"nth\" function)" ; failed ;} 
 	done
 
 	# This code below is standard, without tweaks.
-	sec="$(bc -l <<< "scale=11; ${vid_totalfrm} / ${total_frame}")"
-	sec="$(bc -l <<< "scale=2; x = (${t:-1} - ${frm_delay}) * ${sec} / ${vid_fps};"' if (length (x) == scale (x) && x != 0) { if (x < 0) print "-",0,-x else print 0,x } else print x')"
-	if grep -qE '^-' <<< "${sec}"; then
-		sec="$(bc -l <<< "scale=2; x = ${t:-1} * ${sec} / ${vid_fps};"' if (length (x) == scale (x) && x != 0) { if (x < 0) print "-",0,-x else print 0,x } else print x')"
+	sec="$(bc -l <<< "scale=2; x = (${t:-1} - ${frm_delay}) / ${img_fps};"' if (length (x) == scale (x) && x != 0) { if (x < 0) print "-",0,-x else print 0,x } else print x')"
+	if [[ "${2}" = "timestamp" ]] || grep -qE '^-' <<< "${sec}"; then
+		sec="$(bc -l <<< "scale=2; x = ${t:-1} / ${img_fps};"' if (length (x) == scale (x) && x != 0) { if (x < 0) print "-",0,-x else print 0,x } else print x')"
 	fi
 	secfloat="${sec#*.}" sec="${sec%.*}" sec="${sec:-0}"
 	[[ "${secfloat}" =~ ^0[8-9]$ ]] && secfloat="${secfloat#0}"
@@ -135,17 +135,16 @@ scrv3(){
 	if [[ "${locationsub}" =~ \.srt$ ]]; then
 		message_init="$(
 			awk -v curr_time_sc="${current_time}" -v RS="" '
-			function strip_ms(time) {
-				sub(/\.[0-9]+/, "", time)
-				return time
-			}
-			BEGIN {
-				curr_time_sc = strip_ms(curr_time_sc)
+			function m(t){
+				gsub(/,/,".",t)
+				split(t, a, ":")
+				return a[1]*3600 + a[2]*60 + a[3]
 			}
 			{
-				start_time = strip_ms(substr($2, 1, 8))
-				end_time = strip_ms(substr($4, 1, 8))
-				if (curr_time_sc >= start_time && curr_time_sc <= end_time) {
+				curr_time = m(curr_time_sc)
+				start_time = m(substr($2, 1, 12))
+				end_time = m(substr($4, 1, 12))
+				if (curr_time >= start_time && curr_time <= end_time){
 					gsub("\n", " ")
 					gsub(/\r/, "")
 					sub(/^[0-9]+\s[0-9:,]+ --> [0-9:,]+./, "")
@@ -156,27 +155,30 @@ scrv3(){
 		)"
 	elif [[ "${locationsub}" =~ \.ass$|\.ssa$ ]]; then
 		message_init="$(
-			awk -F ',' -v curr_time_sc="${current_time}" '/Dialogue:/ {
-				split(curr_time_sc, aa, ":");
-				curr_time = aa[1]*3600 + aa[2]*60 + aa[3];
-				split($2, a, ":");
-				start_time = a[1]*3600 + a[2]*60 + a[3];
-				split($3, b, ":");
-				end_time = b[1]*3600 + b[2]*60 + b[3];
-				if (curr_time>=start_time && curr_time<=end_time) {
+			awk -F ',' -v curr_time_sc="${current_time}" '
+			function m(t){
+				split(t, a, ":");
+				return a[1]*3600 + a[2]*60 + a[3]
+				delete a
+			}
+			/Dialogue:/ {
+				curr_time = m(curr_time_sc)
+				start_time = m($2)
+				end_time = m($3)
+				if (curr_time >= start_time && curr_time <= end_time) {
 					c = $0;
-					split(c, d, ",");
-					split(c, e, ",,");
-					f = d[4]","d[5]",";
-					g = (f ~ /[a-zA-Z0-9],,/) ? e[3] : e[2];
-					gsub(/\r/,"",g);
-					gsub(/   /," ",g);
-					gsub(/!([a-zA-Z0-9])/,"! \\1",g);
-					gsub(/(\\N{\\c&H727571&}|{\\c&HB2B5B2&})/,", ",g);
-					gsub(/{([^\x7d]*)}/,"",g);
-					if (g ~ /[[:graph:]]\\N/) gsub(/\\N/," ",g);
-					gsub(/\\N/,"",g);
-					gsub(/\\h/,"",g);
+					split(c, d, ",")
+					split(c, e, ",,")
+					f = d[4]","d[5]","
+					g = (f ~ /[a-zA-Z0-9],,/) ? e[3] : e[2]
+					gsub(/\r/,"",g)
+					gsub(/   /," ",g)
+					gsub(/!([a-zA-Z0-9])/,"! \\1",g)
+					gsub(/(\\N{\\c&H727571&}|{\\c&HB2B5B2&})/,", ",g)
+					gsub(/{([^\x7d]*)}/,"",g)
+					if (g ~ /[[:graph:]]\\N/) gsub(/\\N/," ",g)
+					gsub(/\\N/,"",g)
+					gsub(/\\h/,"",g)
 					if (f ~ /[^,]*,sign/) {
 						print "【"g"】"
 					} else if (f ~ /Signs,,/) {
@@ -225,8 +227,8 @@ for i in "${season}" "${episode}" "${total_frame}"; do
 done
 
 # Get frame time-stamp
-if [[ -n "${vid_fps}" ]] && [[ -n "${vid_totalfrm}" ]] && [[ -n "${total_frame}" ]]; then
-	frame_timestamp="$(nth "${prev_frame}")"
+if [[ -n "${img_fps}" ]]; then
+	frame_timestamp="$(nth "${prev_frame}" "timestamp")"
 	# Call the Scraper of Subs
 	if [[ -e "${locationsub}" ]] && [[ -n "$(<"${locationsub}")" ]]; then
 		scrv3 "${frame_timestamp}"

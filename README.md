@@ -14,7 +14,7 @@
   - [Setup your BOT](#setup-your-bot)
   - [How to make your Content Public](#how-to-make-your-content-public)
   - [How to Run the Bot Manually](#how-to-run-the-bot-manually)
-  - [How to Manually Disable the Posting](#how-to-manually-disable-the-posting)
+  - [How to Manually Disable the Posting](#how-to-manually-enabledisable-the-posting)
 - [Notes and Tips](#notes-and-tips)
 - [Contributing](#contributing)
 - [Status](#status)
@@ -48,7 +48,7 @@ This section tells how to make it work. In more detailed way.
   - Click on `User Token` and choose the page you want.<p>
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221355474-107eaf3b-c9f7-4179-81cf-4cb4b58f396d.png)
   - There's gonna popup there, just give the App Permissions and Authorize it.
-  - Now Click `Generate Access Token` then copy the Short-Lived-Token<p>
+  - Now Click `Generate Access Token` and set the `User Token` to the page you want, then copy the Short-Lived-Token<p>
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221355673-131f9bed-9828-4750-9366-2958e378bd37.png)
   - Go back to `Dashboard` Again. Then hover through `tools` and click `Access Token Debugger`<p>
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221399431-f14c716f-c417-4c17-8cca-d6f8244caa19.png)
@@ -77,8 +77,8 @@ This section tells how to make it work. In more detailed way.
   ```
   iwr -useb get.scoop.sh | iex
   ```
-  > [!NOTE]
-  > If theres an error occured, just run the command below. <sup>(Disregard the command below if theres no error appeared)</sup>
+  > [!TIP]
+  > If theres an error occured, just run the command below and re-run the command above. <sup>(Disregard the command below if theres no error appeared)</sup>
   > ```
   > Set-ExecutionPolicy RemoteSigned -scope CurrentUser
   > ```
@@ -106,16 +106,20 @@ This section tells how to make it work. In more detailed way.
   - `-q:v 3` quality
   - `frame_%00d.jpg` output file
   
-  Wait until it finished... Then, we're gonna gather the infos of Video and Make sure to Take note all the infos needed.
+  Wait until it finished...
 
-  To get the total frames of the video. <sup>(You can see this info too while chopping the frames)</sup> 
-  ```
-  ffprobe -v error -select_streams v:0 -count_packets -show_entries stream=nb_read_packets -of csv=p=0 video.mkv
-  ```
-  To get the frame rate of the video  <sup>(If you get fractions "24/1" omit "/1")</sup>
-  ```
-  ffprobe -v error -select_streams v:0 -show_entries stream=r_frame_rate -of default=noprint_wrappers=1:nokey=1 video.mkv
-  ```
+  > [!NOTE]
+  > This is getting this info is deprecated, no need for you to gather it.
+  > > Then, we're gonna gather the infos of Video and Make sure to Take note all the infos needed.
+  > >
+  > > To get the total frames of the video. <sup>(You can see this info too while chopping the frames)</sup> 
+  > > ```
+  > > ffprobe -v error -select_streams v:0 -count_packets -show_entries stream=nb_read_packets -of csv=p=0 video.mkv
+  > > ```
+  > > To get the frame rate of the video  <sup>(If you get fractions "24/1" omit "/1")</sup>
+  > > ```
+  > > ffprobe -v error -select_streams v:0 -show_entries stream=r_frame_rate -of default=noprint_wrappers=1:nokey=1 video.mkv
+  > > ```
   
   Then now we're gonna upload the frames to GitHub.
   Open your `Windows Powershell` and Run the Command below:
@@ -157,9 +161,12 @@ This section tells how to make it work. In more detailed way.
   <details>
   <summary>Click Here to Show</summary><p>
   
-  - Add subtitle file <sup>(only supported **\*.ass** subtitle)</sup>
+  - Add subtitle file <sup>(only supported **\*.ass/\*.ssa, \*.srt** subtitles)</sup>
   - Insert all the infos needed in `config.conf` file.
-  ![Screenshot](https://user-images.githubusercontent.com/93582751/225806519-3b563df1-68f0-485c-9579-61dde2a74a4f.png)
+  https://github.com/fearocanity/ebtrfio-template/blob/039f6e9cf9f89356b7b8bd60b074f36a6ef9d8d4/config.conf#L4-L8
+  
+  
+  <!-- ![Screenshot](https://user-images.githubusercontent.com/93582751/225806519-3b563df1-68f0-485c-9579-61dde2a74a4f.png) -->
   - And push it to master.
   
   We need to setup our repo secret variables too...
@@ -217,14 +224,14 @@ This section tells how to make it work. In more detailed way.
   - Click on `init banner`, And click `Run Workflow`<p>
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221397447-13ec2f97-6830-4600-87a1-390f7f473d5b.png)
   
-   > [!WARNING]
-   > We prefer not doing this <sup>(The BOT is already running)</sup>, because it will cause to run the workflow twice when the automatic run was executed. it'll cause duplication. Instead do [Manually Disable Workflow](#how-to-manually-disable-the-posting)
+   > [!CAUTION]
+   > We prefer not doing this *(The BOT is already running)*, because it will cause to run the workflow twice when the automatic run was executed. it'll cause duplication. Instead do [Manually Disable Workflow](#how-to-manually-enabledisable-the-posting). Make sure you know what you're doing. *(This is helpful if you want to run the posting after you enable the workflow)*
 
   </details>
   
   ---
   
-  ### How to Manually Disable the Posting
+  ### How to Manually Enable/Disable the Posting
   <details>
   <summary>Click Here to Show</summary><p>
   
@@ -233,17 +240,32 @@ This section tells how to make it work. In more detailed way.
   - Click on `init banner`, and click the three dots `···`. Then finally, click on `Disable Workflow`<p>
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221398101-a13b6416-dbb9-4cfa-bb34-3a95b330f210.png)
     
-  > [!NOTE]
+  > [!TIP]
   > Enabling it pretty much the same procedure, It will appear the enable button at the top.
   </details>
 
-  ## Notes and Tips
-  <table>
-  <tr>
-  <td>
-  <div align="center">
+  ---
+  
+  ### How to Change the Interval execution of Posting
 
-  > [!NOTE]
+  <details>
+  <summary>Click Here to Show</summary><p>
+
+  - Firstly, go to `.github/workflows/process.yml`
+  ![Screenshot](https://github.com/fearocanity/ebtrfio-template/assets/91414643/77fd6f00-c350-4a68-bfdc-40ff8d3c8658)
+
+  - And change the cron syntax `0 */2 * * *`, this cron syntax stands for `every 2 hrs`, so you can just change the `2` based on your likings. Or you can make your own cron [here](https://crontab.guru/).
+
+  > [!CAUTION]
+  > Make sure you know what you're doing, This might cause duplications and errors on posting. And before you adjust it, make sure the product of `fph` and `mins` mustn't exceed to the number of hours you set on cron.
+>  Assume you have `fph=50` and `mins=5`, so the product of it is: `50 * 5 = 250`, then divide it with 60 to know the number of hours: `250 / 60 = 4.16 hrs`
+
+
+  </details>
+
+  ## Notes and Tips
+
+  > [!TIP]
   > - By Default, the bot will automatically run every 2 hrs. <sup>(This is our Standard Interval posting)</sup>
   > - We recommend to use `Use this Template` button rather than forking this repository.
   > - We recommend Creating a Pull Request when you're setupping frames for next episode/series to track your changes and guides you on what steps you will take.
@@ -255,10 +277,6 @@ This section tells how to make it work. In more detailed way.
   > - If you need help, just message us on our [<sub><img src="https://camo.githubusercontent.com/8f245234577766478eaf3ee72b0615e99bb9ef3eaa56e1c37f75692811181d5c/68747470733a2f2f6564656e742e6769746875622e696f2f537570657254696e7949636f6e732f696d616765732f7376672f66616365626f6f6b2e737667" height="20"></sub> Facebook](https://facebook.com/btrframes) page. Or create an Issue/Discussion thread here.
   > - When using a VPS/Droplet server, just clone this repository and paste all your frames to `frames` directory, also the tokens are gonna be in `secret.sh` file.
 
-  </div>
-  </table>
-  </tr>
-  </td>
 
   > [!WARNING]
   > We're not responsible whatever happens to your Facebook account. Just to be safe, I prefer using an dedicated account for the page, else you can use your main but use it with care. *Use at your own risk*

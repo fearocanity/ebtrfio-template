@@ -20,6 +20,7 @@ lim_frame="$((prev_frame+fph-1))"
 time_ended="$(TZ="${sys_timezone}" date)"
 if [[ "${desc_update}" == "1" ]]; then
     ovr_all="$(sed -E ':L;s=\b([0-9]+)([0-9]{3})\b=\1,\2=g;t L' counter_n.txt)"
+    get_interval="$(sed -nE 's|.*cron: "[^ ]* \*/([^ ]*) [^ ]* [^ ]*.*"|\1|p' ./.github/workflows/process.yml)"
     abt_txt="$(eval "printf '%s' \"$(sed -E 's_\{\\n\}_\n_g;s_\{([^\x7d]*)\}_\${\1:-??}_g;s|ovr_all:-\?\?|ovr_all:-0|g' <<< "${abt_txt}"\")")"
     curl -sLk -X POST "https://graph.facebook.com/me/?access_token=${1}" --data-urlencode "about=${abt_txt}" -o /dev/null || true
 fi
