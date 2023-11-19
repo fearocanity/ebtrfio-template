@@ -77,7 +77,7 @@ This section tells how to make it work. In more detailed way.
   ```
   iwr -useb get.scoop.sh | iex
   ```
-  > [!NOTE]
+  > [!TIP]
   > If theres an error occured, just run the command below and re-run the command above. <sup>(Disregard the command below if theres no error appeared)</sup>
   > ```
   > Set-ExecutionPolicy RemoteSigned -scope CurrentUser
@@ -159,7 +159,10 @@ This section tells how to make it work. In more detailed way.
   
   - Add subtitle file <sup>(only supported **\*.ass/\*.ssa, \*.srt** subtitles)</sup>
   - Insert all the infos needed in `config.conf` file.
-  ![Screenshot](https://user-images.githubusercontent.com/93582751/225806519-3b563df1-68f0-485c-9579-61dde2a74a4f.png)
+  https://github.com/fearocanity/ebtrfio-template/blob/039f6e9cf9f89356b7b8bd60b074f36a6ef9d8d4/config.conf#L4-L8
+  
+  
+  <!-- ![Screenshot](https://user-images.githubusercontent.com/93582751/225806519-3b563df1-68f0-485c-9579-61dde2a74a4f.png) -->
   - And push it to master.
   
   We need to setup our repo secret variables too...
@@ -217,7 +220,7 @@ This section tells how to make it work. In more detailed way.
   - Click on `init banner`, And click `Run Workflow`<p>
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221397447-13ec2f97-6830-4600-87a1-390f7f473d5b.png)
   
-   > [!WARNING]
+   > [!CAUTION]
    > We prefer not doing this *(The BOT is already running)*, because it will cause to run the workflow twice when the automatic run was executed. it'll cause duplication. Instead do [Manually Disable Workflow](#how-to-manually-enabledisable-the-posting). Make sure you know what you're doing. *(This is helpful if you want to run the posting after you enable the workflow)*
 
   </details>
@@ -233,7 +236,7 @@ This section tells how to make it work. In more detailed way.
   - Click on `init banner`, and click the three dots `···`. Then finally, click on `Disable Workflow`<p>
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221398101-a13b6416-dbb9-4cfa-bb34-3a95b330f210.png)
     
-  > [!NOTE]
+  > [!TIP]
   > Enabling it pretty much the same procedure, It will appear the enable button at the top.
   </details>
 
@@ -249,7 +252,7 @@ This section tells how to make it work. In more detailed way.
 
   - And change the cron syntax `0 */2 * * *`, this cron syntax stands for `every 2 hrs`, so you can just change the `2` based on your likings. Or you can make your own cron [here](https://crontab.guru/).
 
-  > [!WARNING]
+  > [!CAUTION]
   > Make sure you know what you're doing, This might cause duplications and errors on posting. And before you adjust it, make sure the product of `fph` and `mins` mustn't exceed to the number of hours you set on cron.
 >  Assume you have `fph=50` and `mins=5`, so the product of it is: `50 * 5 = 250`, then divide it with 60 to know the number of hours: `250 / 60 = 4.16 hrs`
 
@@ -258,7 +261,7 @@ This section tells how to make it work. In more detailed way.
 
   ## Notes and Tips
 
-  > [!NOTE]
+  > [!TIP]
   > - By Default, the bot will automatically run every 2 hrs. <sup>(This is our Standard Interval posting)</sup>
   > - We recommend to use `Use this Template` button rather than forking this repository.
   > - We recommend Creating a Pull Request when you're setupping frames for next episode/series to track your changes and guides you on what steps you will take.
