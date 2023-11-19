@@ -106,16 +106,20 @@ This section tells how to make it work. In more detailed way.
   - `-q:v 3` quality
   - `frame_%00d.jpg` output file
   
-  Wait until it finished... Then, we're gonna gather the infos of Video and Make sure to Take note all the infos needed.
+  Wait until it finished...
 
-  To get the total frames of the video. <sup>(You can see this info too while chopping the frames)</sup> 
-  ```
-  ffprobe -v error -select_streams v:0 -count_packets -show_entries stream=nb_read_packets -of csv=p=0 video.mkv
-  ```
-  To get the frame rate of the video  <sup>(If you get fractions "24/1" omit "/1")</sup>
-  ```
-  ffprobe -v error -select_streams v:0 -show_entries stream=r_frame_rate -of default=noprint_wrappers=1:nokey=1 video.mkv
-  ```
+  > [!NOTE]
+  > This is getting this info is deprecated, no need for you to gather it.
+  > > Then, we're gonna gather the infos of Video and Make sure to Take note all the infos needed.
+  > >
+  > > To get the total frames of the video. <sup>(You can see this info too while chopping the frames)</sup> 
+  > > ```
+  > > ffprobe -v error -select_streams v:0 -count_packets -show_entries stream=nb_read_packets -of csv=p=0 video.mkv
+  > > ```
+  > > To get the frame rate of the video  <sup>(If you get fractions "24/1" omit "/1")</sup>
+  > > ```
+  > > ffprobe -v error -select_streams v:0 -show_entries stream=r_frame_rate -of default=noprint_wrappers=1:nokey=1 video.mkv
+  > > ```
   
   Then now we're gonna upload the frames to GitHub.
   Open your `Windows Powershell` and Run the Command below:
