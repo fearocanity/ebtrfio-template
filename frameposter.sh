@@ -105,20 +105,20 @@ nth(){
 	#
 	# You need to get the exact Frame Rate of a video
 	t="${1/[!0-9]/}"
-	# Old Formula: {current_frame} * ({2fps}/{frame_rate}) / {frame_rate} = {total_secs}
+	# Old Formula: {current_frame} * ({vid_totalframe} / {total_frame}) / {frame_rate} = {total_secs}
+	# Ex: (1532 - 1) * 7.98475609756 / 23.93 = 511.49
 	# Note: Old formula is innaccurate
 	#
-	# New Formula: {current_frame} * ({vid_totalframe} / {total_frame}) / {frame_rate} = {total_secs}
-	# Ex: (1532 - 1) * 7.98475609756 / 23.93 = 511.49
-	for i in "${vid_totalfrm}" "${total_frame}" "${vid_fps}"; do
+	# New Formula (most precise): {current_frame} / {img_fps} = {total_secs}
+	# Ex: 1532 * 3.5 = 438.57
+	for i in "${t}" "${img_fps}"; do
 		[[ -z "${i}" ]] && { printf '%s\n' "posting error: lack of information (\"nth\" function)" ; failed ;} 
 	done
 
 	# This code below is standard, without tweaks.
-	sec="$(bc -l <<< "scale=11; ${vid_totalfrm} / ${total_frame}")"
-	sec="$(bc -l <<< "scale=2; x = (${t:-1} - ${frm_delay}) * ${sec} / ${vid_fps};"' if (length (x) == scale (x) && x != 0) { if (x < 0) print "-",0,-x else print 0,x } else print x')"
+	sec="$(bc -l <<< "scale=2; x = (${t:-1} - ${frm_delay}) / ${img_fps};"' if (length (x) == scale (x) && x != 0) { if (x < 0) print "-",0,-x else print 0,x } else print x')"
 	if [[ "${2}" = "timestamp" ]] || grep -qE '^-' <<< "${sec}"; then
-		sec="$(bc -l <<< "scale=2; x = ${t:-1} * ${sec} / ${vid_fps};"' if (length (x) == scale (x) && x != 0) { if (x < 0) print "-",0,-x else print 0,x } else print x')"
+		sec="$(bc -l <<< "scale=2; x = ${t:-1} / ${img_fps};"' if (length (x) == scale (x) && x != 0) { if (x < 0) print "-",0,-x else print 0,x } else print x')"
 	fi
 	secfloat="${sec#*.}" sec="${sec%.*}" sec="${sec:-0}"
 	[[ "${secfloat}" =~ ^0[8-9]$ ]] && secfloat="${secfloat#0}"
