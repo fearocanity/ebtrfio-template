@@ -227,7 +227,7 @@ for i in "${season}" "${episode}" "${total_frame}"; do
 done
 
 # Get frame time-stamp
-if [[ -n "${vid_fps}" ]] && [[ -n "${vid_totalfrm}" ]] && [[ -n "${total_frame}" ]]; then
+if [[ -n "${img_fps}" ]]; then
 	frame_timestamp="$(nth "${prev_frame}" "timestamp")"
 	# Call the Scraper of Subs
 	if [[ -e "${locationsub}" ]] && [[ -n "$(<"${locationsub}")" ]]; then
