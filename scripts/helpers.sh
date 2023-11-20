@@ -30,7 +30,7 @@ helper_genrandnum(){
 }
 
 helper_genrandrange(){
-	awk -v "a=${1}" -v "b={2}" 'BEGIN{srand();print int(a+rand()*(b-a+1))}'
+	awk -v "a=${1}" -v "b=${2}" 'BEGIN{srand();print int(a+rand()*(b-a+1))}'
 }
 
 helper_varchecker(){
