@@ -116,7 +116,7 @@ if [[ "${gif_post}" = "1" ]]; then
 fi
 
 # This will note that the Post was success, without errors and append it to log file
-printf '%s %s\n' "[√] Frame: ${prev_frame}, Episode ${episode}" "https://facebook.com/${id}" >> "${FRMENV_LOG_FILE}"
+printf '%s %s\n' "[√] Frame: ${prev_frame}, Episode ${episode}" "https://facebook.com/${post_id}" >> "${FRMENV_LOG_FILE}"
 
 # Lastly, This will increment prev_frame variable and redirect it to file
 next_frame="$((prev_frame+=1))"

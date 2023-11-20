@@ -1,12 +1,13 @@
 #!/bin/bash
-
+#
 # check if all req. was provided in your repository for preparing frames to avoid errors
-
-FRMENV_FBTOKEN="${1}"
-FRMENV_GIFTOKEN="${2}"
 
 # import config
 . config.conf
+. secret.sh
+
+FRMENV_FBTOKEN="${1:-${FRMENV_FBTOKEN}}"
+FRMENV_GIFTOKEN="${2:-${FRMENV_GIFTOKEN}}"
 
 format_noerr(){ printf '$\\fbox{\\color{#126329}\\textsf{\\normalsize  \\&#x2611; \\kern{0.2cm}\\small  %s  }}$' "${*}" ;}
 format_err(){ printf '$\\fbox{\\color{#82061E}\\textsf{\\normalsize  \\&#x26A0; \\kern{0.2cm}\\small  %s  }}$' "${*}" ;} 
