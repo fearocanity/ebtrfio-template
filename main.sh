@@ -74,18 +74,20 @@ helper_varchecker 'lack of basic information (message variable)' "${season}" "${
 if [[ -n "${img_fps}" ]]; then
 	frame_timestamp="$(process_sectotime "${prev_frame}" "timestamp")"
 	# Call the Scraper of Subs
-	if [[ -e "${FRMENV_LOG_FILE}" ]] && [[ -n "$(<"${FRMENV_LOG_FILE}")" ]]; then
-		process_subs "${frame_timestamp}"
+	if [[ "${sub_posting}" = "1" ]]; then
+		if [[ "${multilingual_subs}" = "1" ]]; then
+			process_multisubs "${frame_timestamp}"
+		elif [[ -e "${FRMENV_SUBS_FILE}" ]] && [[ -n "$(<"${FRMENV_SUBS_FILE}")" ]]; then
+			process_subs "${frame_timestamp}" "${FRMENV_SUBS_FILE}"
+			[[ -z "${message_craft}" ]] && BOOL_IS_EMPTY="1" || BOOL_IS_EMPTY="0"
+			# Compare if the Subs are OP/ED Songs or Not (only works on ass/ssa subtitles)
+			if [[ "${BOOL_IS_OPEDSONG}" = "1" ]]; then
+				message_comment="Lyrics:"$'\n'"${message_craft}"
+			else
+				message_comment="Subtitles:"$'\n'"${message_craft}"
+			fi
+		fi
 	fi
-fi
-
-# Compare if the Subs are OP/ED Songs or Not (only works on ass/ssa subtitles)
-if [[ "${BOOL_IS_OPEDSONG}" = "1" ]]; then
-	message_comment="Lyrics:
-${message_craft}"
-else
-	message_comment="Subtitles:
-${message_craft}"
 fi
 
 # Refer to config.conf
@@ -104,7 +106,7 @@ if [[ "${rand_post}" = "1" ]]; then
 fi
 
 # Comment the Subtitles on a post created on timeline
-if [[ "${sub_posting}" = "1" ]] && [[ -e "${FRMENV_SUBS_FILE}" ]]; then
+if [[ "${sub_posting}" = "1" ]]; then
 	sleep "${delay_action}" # Delay
 	[[ "${BOOL_IS_EMPTY}" = "1" ]] || post_subs "${post_id}"
 fi

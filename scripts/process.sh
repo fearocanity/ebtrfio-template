@@ -51,7 +51,7 @@ process_subs(){
 	# Set the current time variable
 	TEMP_CURRENT_TIME="${1}"
 	# Scrape the Subtitles (only supports srt & ass/ssa)
-	if [[ "${FRMENV_SUBS_FILE}" =~ \.srt$ ]]; then
+	if [[ "${2}" =~ \.srt$ ]]; then
 		TEMP_MESSAGE_INIT="$(
 			awk -v curr_time_sc="${TEMP_CURRENT_TIME}" -v RS="" '
 			function m(t){
@@ -70,9 +70,9 @@ process_subs(){
 					gsub(/<[^>]*>|<\/[^>]*>|{([^\x7d]*)}/, "")
 					print $0
 				}
-			}' "${FRMENV_SUBS_FILE}"
+			}' "${2}"
 		)"
-	elif [[ "${FRMENV_SUBS_FILE}" =~ \.ass$|\.ssa$ ]]; then
+	elif [[ "${2}" =~ \.ass$|\.ssa$ ]]; then
 		TEMP_MESSAGE_INIT="$(
 			awk -F ',' -v curr_time_sc="${TEMP_CURRENT_TIME}" '
 			function m(t){
@@ -108,13 +108,31 @@ process_subs(){
 						print g
 					}
 				}
-			}' "${FRMENV_SUBS_FILE}"
+			}' "${2}"
 		)"
 	else
 		printf '%s\n' "failed to post subtitles, unsupported file type" >> "${FRMENV_LOG_FILE}"
 	fi
 	message_craft="$(awk '!a[$0]++{if ($0 ~ /^【.+】$/) aa=aa $0 "\n"; else bb=bb $0 "\n"} END {print aa bb}' <<< "${TEMP_MESSAGE_INIT}" | sed '/^[[:blank:]]*$/d;/^$/d')"
 	[[ "${message_craft}" =~ ^『.*』$ ]] && BOOL_IS_OPEDSONG="1"
-	[[ -z "${message_craft}" ]] && BOOL_IS_EMPTY="1" || BOOL_IS_EMPTY="0"
 	unset TEMP_CURRENT_TIME TEMP_MESSAGE_INIT TEMP_MESSAGE_CRAFT
+}
+
+process_multisubs(){
+	if ! declare -p "FRMENV_SUBS_FILE" | grep -qE -- '^declare -a'; then
+		printf '%s\n' "Variable is not an array" >> "${FRMENV_LOG_FILE}"
+		FRMENV_SUBS_FILE=("$FRMENV_SUBS_FILE")
+	fi
+	for i in "${FRMENV_SUBS_FILE[@]}"; do
+		[[ -e "${i}" ]] || continue
+		[[ "${i}" =~ .*_([A-Za-z]{2})\.(srt|ass|ssa)$ ]] || continue
+		process_subs "${1}" "${i}"
+		if [[ "${BOOL_IS_OPEDSONG}" = "1" ]]; then
+			message_comment+="Lyrics [$(sed -E 's/.*_([A-Za-z]{2})\.(srt|ass|ssa)$/\1/g' <<< "${i}" | tr '[:lower:]' '[:upper:]')]:"$'\n'"${message_craft}"$'\n'
+		else
+			message_comment+="Subtitles [$(sed -E 's/.*_([A-Za-z]{2})\.(srt|ass|ssa)$/\1/g' <<< "${i}" | tr '[:lower:]' '[:upper:]')]:"$'\n'"${message_craft}"$'\n'
+		fi
+	done
+	message_comment="$(sed '/^[[:blank:]]*$/d;/^$/d' <<< "${message_comment}")"
+	[[ -z "${message_comment}" ]] && BOOL_IS_EMPTY="1" || BOOL_IS_EMPTY="0"
 }
