@@ -121,7 +121,7 @@ process_subs(){
 process_multisubs(){
 	if ! declare -p "FRMENV_SUBS_FILE" | grep -qE -- '^declare -a'; then
 		printf '%s\n' "Variable is not an array" >> "${FRMENV_LOG_FILE}"
-		FRMENV_SUBS_FILE=("$FRMENV_SUBS_FILE")
+		FRMENV_SUBS_FILE=("${FRMENV_SUBS_FILE}")
 	fi
 	for i in "${FRMENV_SUBS_FILE[@]}"; do
 		[[ -e "${i}" ]] || continue
