@@ -75,10 +75,11 @@ if [[ -n "${img_fps}" ]]; then
 	frame_timestamp="$(process_sectotime "${prev_frame}" "timestamp")"
 	# Call the Scraper of Subs
 	if [[ "${sub_posting}" = "1" ]]; then
+		frame_totime="$(process_sectotime "${prev_frame}")"
 		if [[ "${multilingual_subs}" = "1" ]]; then
-			process_multisubs "${frame_timestamp}"
+			process_multisubs "${frame_totime}"
 		elif [[ -e "${FRMENV_SUBS_FILE}" ]] && [[ -n "$(<"${FRMENV_SUBS_FILE}")" ]]; then
-			process_subs "${frame_timestamp}" "${FRMENV_SUBS_FILE}"
+			process_subs "${frame_totime}" "${FRMENV_SUBS_FILE}"
 			[[ -z "${message_craft}" ]] && BOOL_IS_EMPTY="1" || BOOL_IS_EMPTY="0"
 			# Compare if the Subs are OP/ED Songs or Not (only works on ass/ssa subtitles)
 			if [[ "${BOOL_IS_OPEDSONG}" = "1" ]]; then
