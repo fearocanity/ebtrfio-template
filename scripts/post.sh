@@ -1,8 +1,8 @@
 #!/bin/bash
-#
+# */
 # This is where all the actions will happen
+# /*
 
-# post_gif "<fx>" "<fy>" "<post_id>"
 post_gif(){
 	TEMP_GIFURL="$(process_creategif "${1}" "${2}")"
 	TEMP_CRAFTMESSAGE="GIF created from last ${gif_prev_framecount} frames (${1}-${2})"
@@ -14,7 +14,6 @@ post_gif(){
 	unset TEMP_CRAFTMESSAGE
 }
 
-# post_randomcrop "<prev_frame>" "<post_id>"
 post_randomcrop(){
 	TEMP_CRAFTMESSAGE="$(process_randomcrop "${FRMENV_FRAME_LOCATION}/frame_${1}.jpg")"
 	curl -sfLX POST \
