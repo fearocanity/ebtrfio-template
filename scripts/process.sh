@@ -1,9 +1,8 @@
 #!/bin/bash
-#
+# */
 # Process task that was called in Main
+# /*
 
-
-# process_creategif "<x-frame>" "<y-frame>"
 process_creategif(){
 	helper_depcheck convert | tee -a "${FRMENV_LOG_FILE}" || return 2
 	[[ -e "${FRMENV_GIF_LOCATION}" ]] && rm "${FRMENV_GIF_LOCATION}"
