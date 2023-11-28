@@ -13,9 +13,18 @@ on:
 jobs:
   check-repo:
     runs-on: ubuntu-latest
-    if: ${{ github.triggering_actor == github.repository_owner }}
     steps:
       - uses: actions/checkout@v3
+      - name: "ownership check"
+        env:
+          trig_actor: ${{ github.triggering_actor }}
+          repo_ownr: ${{ github.repository_owner }}
+        run: |
+          case "${trig_actor}" in
+            "${repo_ownr}"|github-actions*) : ;;
+            *) printf '%s\n'"Runner prevented to run because the script is executed by an untrusted user \"${trig_actor}\". (Only owner can execute, for security)" >&2 ; exit 1 ;;
+          esac
+
       - name: execute
         env:
           tok_fb: ${{ secrets.TOK_FB }}

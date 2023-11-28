@@ -19,8 +19,8 @@ process_creategif(){
 
 process_randomcrop(){
 	[[ -e "${FRMENV_RC_LOCATION}" ]] && rm "${FRMENV_RC_LOCATION}"
-	TEMP_CROP_WIDTH="$(helper_genrandrange "100" "350")"
-	TEMP_CROP_HEIGHT="$(helper_genrandrange "100" "350")"
+	TEMP_CROP_WIDTH="$(helper_genrandrange "${rcrop_x}" "${rcrop_y}")"
+	TEMP_CROP_HEIGHT="$(helper_genrandrange "${rcrop_x}" "${rcrop_y}")"
 	TEMP_IMAGE_WIDTH="$(identify -format '%w' "${1}")"
 	TEMP_IMAGE_HEIGHT="$(identify -format '%h' "${1}")"
 	TEMP_CROP_X="$(($(helper_genrandnum) % (TEMP_IMAGE_WIDTH - TEMP_CROP_WIDTH)))"
@@ -126,11 +126,13 @@ process_multisubs(){
 		[[ -e "${i}" ]] || continue
 		[[ "${i}" =~ .*_([A-Za-z]{2})\.(srt|ass|ssa)$ ]] || continue
 		process_subs "${1}" "${i}"
+		[[ -z "${message_comment}" ]] && { unset message_craft BOOL_IS_OPEDSONG ; continue ;}
 		if [[ "${BOOL_IS_OPEDSONG}" = "1" ]]; then
 			message_comment+="Lyrics [$(sed -E 's/.*_([A-Za-z]{2})\.(srt|ass|ssa)$/\1/g' <<< "${i}" | tr '[:lower:]' '[:upper:]')]:"$'\n'"${message_craft}"$'\n'
 		else
 			message_comment+="Subtitles [$(sed -E 's/.*_([A-Za-z]{2})\.(srt|ass|ssa)$/\1/g' <<< "${i}" | tr '[:lower:]' '[:upper:]')]:"$'\n'"${message_craft}"$'\n'
 		fi
+		unset BOOL_IS_OPEDSONG
 	done
 	message_comment="$(sed '/^[[:blank:]]*$/d;/^$/d' <<< "${message_comment}")"
 	[[ -z "${message_comment}" ]] && BOOL_IS_EMPTY="1" || BOOL_IS_EMPTY="0"

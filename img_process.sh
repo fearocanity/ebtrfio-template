@@ -1,6 +1,6 @@
 #!/bin/bash
-prev_frame="$(<"${FRMENV_ITER_FILE}")"
 . config.conf
+prev_frame="$(<"${FRMENV_ITER_FILE}")"
 [[ -e status/status.jpg ]] && : > status/status.jpg
 
 temp_cleanup(){

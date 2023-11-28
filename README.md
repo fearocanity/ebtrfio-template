@@ -23,6 +23,7 @@
 ## Tutorial
 This section tells how to make it work. In more detailed way.
 
+> [!NOTE]
 > Grammatical Errors ahead, we're not native english speaker so please bear with us.
 
 ### Setup Facebook Token
