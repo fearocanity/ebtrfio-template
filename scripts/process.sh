@@ -19,8 +19,8 @@ process_creategif(){
 
 process_randomcrop(){
 	[[ -e "${FRMENV_RC_LOCATION}" ]] && rm "${FRMENV_RC_LOCATION}"
-	TEMP_CROP_WIDTH="$(helper_genrandrange "100" "350")"
-	TEMP_CROP_HEIGHT="$(helper_genrandrange "100" "350")"
+	TEMP_CROP_WIDTH="$(helper_genrandrange "${rcrop_x}" "${rcrop_y}")"
+	TEMP_CROP_HEIGHT="$(helper_genrandrange "${rcrop_x}" "${rcrop_y}")"
 	TEMP_IMAGE_WIDTH="$(identify -format '%w' "${1}")"
 	TEMP_IMAGE_HEIGHT="$(identify -format '%h' "${1}")"
 	TEMP_CROP_X="$(($(helper_genrandnum) % (TEMP_IMAGE_WIDTH - TEMP_CROP_WIDTH)))"
