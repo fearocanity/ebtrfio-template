@@ -1,15 +1,16 @@
 #!/bin/bash
 
 # Import config.conf
-[[ -e ./config.conf ]] && . ./config.conf
+. config.conf
+. scripts/post.sh
 [[ -e status/status.jpg ]] && : > status/status.jpg
 
-prev_frame="$(<./fb/frameiterator)"
-time_started="$(TZ="${sys_timezone}" date)"
+prev_frame="$(<"${FRMENV_ITER_FILE}")"
+time_started="$(TZ="${FRMENV_SYS_TIMEZONE}" date)"
 
 # Main Loop
 for ((i=1;i<=fph;i++)); do
-    bash ./frameposter.sh "${1}" "${2}" || bash img_process.sh "failed" "${time_started}" || exit 1
+    bash ./main.sh "${1}" "${2}" || bash img_process.sh "failed" "${time_started}" || exit 1
     sleep "$((mins * 60))"
 done
 
@@ -17,11 +18,8 @@ lim_frame="$((prev_frame+fph-1))"
 [[ "${lim_frame}" -gt "${total_frame}" ]] && lim_frame="${total_frame}"
 [[ "${prev_frame}" -gt "${total_frame}" ]] && prev_frame="${total_frame}"
 
-time_ended="$(TZ="${sys_timezone}" date)"
+time_ended="$(TZ="${FRMENV_SYS_TIMEZONE}" date)"
 if [[ "${desc_update}" == "1" ]]; then
-    ovr_all="$(sed -E ':L;s=\b([0-9]+)([0-9]{3})\b=\1,\2=g;t L' counter_n.txt)"
-    get_interval="$(sed -nE 's|.*cron: "[^ ]* \*/([^ ]*) [^ ]* [^ ]*.*"|\1|p' ./.github/workflows/process.yml)"
-    abt_txt="$(eval "printf '%s' \"$(sed -E 's_\{\\n\}_\n_g;s_\{([^\x7d]*)\}_\${\1:-??}_g;s|ovr_all:-\?\?|ovr_all:-0|g' <<< "${abt_txt}"\")")"
-    curl -sLk -X POST "https://graph.facebook.com/me/?access_token=${1}" --data-urlencode "about=${abt_txt}" -o /dev/null || true
+    post_changedesc "${1}"
 fi
 bash img_process.sh "success" "${prev_frame}" "${lim_frame}" "${time_started}" "${time_ended}"

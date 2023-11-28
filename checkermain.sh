@@ -1,12 +1,13 @@
 #!/bin/bash
-
+#
 # check if all req. was provided in your repository for preparing frames to avoid errors
 
-graph_url_main="https://graph.facebook.com"
-token="${1}"
-gif_token="${2}"
+# import config
+. config.conf
+. secret.sh
 
-[[ -e ./config.conf ]] && . ./config.conf
+FRMENV_FBTOKEN="${1:-${FRMENV_FBTOKEN}}"
+FRMENV_GIFTOKEN="${2:-${FRMENV_GIFTOKEN}}"
 
 format_noerr(){ printf '$\\fbox{\\color{#126329}\\textsf{\\normalsize  \\&#x2611; \\kern{0.2cm}\\small  %s  }}$' "${*}" ;}
 format_err(){ printf '$\\fbox{\\color{#82061E}\\textsf{\\normalsize  \\&#x26A0; \\kern{0.2cm}\\small  %s  }}$' "${*}" ;} 
@@ -18,15 +19,12 @@ printf '\n\n| %s | %s |\n| ---- | ---- |\n' "Variable/Object" "State"
 
 checkif(){
 	for i; do
-		c="$(printf '\x24{%s}' "${i}")"
-		x="$(eval "printf '%s' \"${c}\"")"
-		if [[ -z "${x}" ]]; then
+		if [[ -z "${!i}" ]]; then
 			format_table "${i}" "$(format_err "Variable is empty")" && err_state="1"
 			printf '\e[31mERROR\e[0m - %s\n' "Variable is empty" >&2
 		else
 			format_table "${i}" "$(format_noerr "Passed")"
 		fi
-		unset c x
 	done
 }
 
@@ -35,10 +33,10 @@ sub_check(){
 		if [[ -z "${subtitle_file}" ]]; then
 			format_table "subtitle_file" "$(format_err "Variable is empty")" && err_state="1"
 			printf '\e[31mERROR\e[0m - %s\n' "Variable is empty" >&2
-		elif [[ ! -e ./fb/"${subtitle_file}" ]]; then
+		elif [[ ! -e "${FRMENV_SUBS_FILE}" ]]; then
 			format_table "subtitle_file" "$(format_err "File not found")" "subtitle_file" && err_state="1"
 			printf '\e[31mERROR\e[0m - %s\n' "File not found" >&2
-		elif [[ -z "$(<./fb/"${subtitle_file}")" ]]; then
+		elif [[ -z "$(<"${FRMENV_SUBS_FILE}")" ]]; then
 			format_table "subtitle_file" "$(format_err "File is empty")" && err_state="1"
 			printf '\e[31mERROR\e[0m - %s\n' "File is empty" >&2
 		else
@@ -70,7 +68,7 @@ frames_check(){
 }
 
 token_check(){
-	check_name="$(curl -sLf "${graph_url_main}/me?fields=name&access_token=${1}" | jq -r .name)" || true
+	check_name="$(curl -sLf "${FRMENV_API_ORIGIN}/me?fields=name&access_token=${1}" | jq -r .name)" || true
 	if [[ -n "${page_name}" ]] && [[ "${check_name}" = "${page_name}" ]]; then
 		format_table "fb_token" "$(format_noerr "Token is Working")"
 	else
@@ -87,10 +85,10 @@ token_check(){
 	fi
 }
 
-checkif season episode img_fps total_frame fph mins delay_action
+checkif season episode total_frame fph mins delay_action
 sub_check
 frames_check
-token_check "${token}" "${gif_token}"
+token_check "${FRMENV_FBTOKEN}" "${FRMENV_GIFTOKEN}"
 printf '\n</div>'
 [[ "${err_state}" != "1" ]] || exit 1
 : "success"

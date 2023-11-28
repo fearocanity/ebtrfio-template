@@ -1,6 +1,6 @@
 #!/bin/bash
-prev_frame="$(<./fb/frameiterator)"
-[[ -e ./config.conf ]] && . ./config.conf
+prev_frame="$(<"${FRMENV_ITER_FILE}")"
+. config.conf
 [[ -e status/status.jpg ]] && : > status/status.jpg
 
 temp_cleanup(){
@@ -53,7 +53,7 @@ create_image(){
 case "${1}" in
 	in_progress)
 		shift 1
-  		time_started="$(TZ="${sys_timezone}" date)"
+		time_started="$(TZ="${FRMENV_SYS_TIMEZONE}" date)"
 		lim_frame="$((prev_frame+fph-1))"
 		[[ "${lim_frame}" -gt "${total_frame}" ]] && lim_frame="${total_frame}"
 		create_image "${prev_frame}" "${lim_frame}" "${total_frame}" "#a26b03" "Posting in Progress..." "#565656" "Time started: ${time_started}"
