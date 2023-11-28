@@ -126,6 +126,7 @@ process_multisubs(){
 		[[ -e "${i}" ]] || continue
 		[[ "${i}" =~ .*_([A-Za-z]{2})\.(srt|ass|ssa)$ ]] || continue
 		process_subs "${1}" "${i}"
+		[[ -z "${message_comment}" ]] && { unset message_craft ; continue ;}
 		if [[ "${BOOL_IS_OPEDSONG}" = "1" ]]; then
 			message_comment+="Lyrics [$(sed -E 's/.*_([A-Za-z]{2})\.(srt|ass|ssa)$/\1/g' <<< "${i}" | tr '[:lower:]' '[:upper:]')]:"$'\n'"${message_craft}"$'\n'
 		else
