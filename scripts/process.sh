@@ -97,11 +97,11 @@ process_subs(){
 					if (g ~ /[[:graph:]]\\N/) gsub(/\\N/," ",g)
 					gsub(/\\N/,"",g)
 					gsub(/\\h/,"",g)
-					if (f ~ /[^,]*,sign/) {
+					if (f ~ /[^,]*,[Ss]ign/) {
 						print "【"g"】"
-					} else if (f ~ /Signs,,/) {
+					} else if (f ~ /[Ss]igns,,/) {
 						print "\""g"\""
-					} else if (f ~ /Songs[^,]*,[^,]*,/) {
+					} else if (f ~ /[Ss]ongs[^,]*,[^,]*,/) {
 						print "『"g"』"
 					} else {
 						print g
