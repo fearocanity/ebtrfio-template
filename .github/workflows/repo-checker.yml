@@ -14,7 +14,7 @@ jobs:
   check-repo:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: "ownership check"
         env:
           trig_actor: ${{ github.triggering_actor }}
