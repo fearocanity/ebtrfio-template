@@ -17,7 +17,8 @@ jobs:
         run: |
           case "${trig_actor}" in
             "${repo_ownr}"|github-actions*) : ;;
-            *) printf '%s\n'"Runner prevented to run because the script is executed by an untrusted user \"${trig_actor}\". (Only owner can execute, for security)" >&2 ; exit 1 ;;
+            *) printf '%s\n'"Runner prevented to run because the script is executed by an untrusted user \"${trig_actor}\". (Only owner can execute, for security)" >&2
+               curl -X POST -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/cancel" ;;
           esac
 
       - name: "chk wf status"
@@ -26,22 +27,31 @@ jobs:
           response="$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/actions/workflows/bot_runner.yml/runs")"
           status="$(echo "${response}" | jq -r '.workflow_runs[].status')"
           if grep -qE 'in_progress' <<< "${status}"; then
-            echo "The bot_runner is still running, The script prevented this workflow to run to avoid conflicts... Cancelling!!"
-            exit 1
+            echo -e '> [!CAUTION]'"\n> The bot_runner is still running, The script prevented this workflow to run to avoid conflicts... Cancelling"'!!' >> "${GITHUB_STEP_SUMMARY}"
+            # Cancel Job
+            curl -X POST -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/cancel"
           fi
           : "Ignore"
 
  inits:
     runs-on: ubuntu-latest
+    if: success() && true
     steps:
       - name: "checkout"
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
+      - name: "check status"
+        run: |
+          if [ "$(<./fb/frameiterator)" -gt "$(sed -nE 's/.*total_frame="([^"]*)".*/\1/p' config.conf)" ]; then
+             echo -e '> [!NOTE]'"\n> The Bot was Finished Running" >> "${GITHUB_STEP_SUMMARY}"
+             curl -X POST -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/cancel"
+          fi
 
       - name: "execute"
         run: bash img_process.sh "in_progress"
 
       - name: "commit banner"
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "stat: Processing..."
           repository: .
