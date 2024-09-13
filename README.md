@@ -67,24 +67,29 @@ This section tells how to make it work. In more detailed way.
   <details>
   <summary>Click Here to Show</summary><p>
 
-  You need to use Windows Powershell to use program called `FFMPEG`
+  You need to use Windows PowerShell to install and use `FFMPEG`
 
-  We need to install Scoop First, before installing `FFMPEG`<p>
-  To open `Windows Powershell`:
-  - Click `Windows Button`
+  Before installing `FFMPEG`, we need to install Scoop, a package manager for Windows<p>
+  Step 1: Open `Windows Powershell`:
+  - Click the `Windows Button` (Start Menu).
   - And Search for `Windows Powershell` then Right-Click and click `Run as Administrator` 
   
-  After you open it, Run this command:<p>
+  Step 2: Set the Execution Policy (First Time Only)
+  - If this is your first time running remote scripts, you'll need to allow PowerShell to execute them. Run the following command to set the execution policy
   ```
-  iwr -useb get.scoop.sh | iex
+  Set-ExecutionPolicy RemoteSigned -scope CurrentUser
   ```
   > [!TIP]
-  > If theres an error occured, just run the command below and re-run the command above. <sup>(Disregard the command below if theres no error appeared)</sup>
+  > If you encounter an error, re-run the command above, and then proceed with the next steps
+
+  Step 3: Install Scoop
+  - Now, install Scoop by running this command:
   > ```
-  > Set-ExecutionPolicy RemoteSigned -scope CurrentUser
+  > iwr -useb get.scoop.sh | iex
   > ```
 
-  Now Run this command, to install `FFMPEG` and `GIT`:
+  Step 4: Install `FFMPEG` and `GIT`
+  Once Scoop is installed, run the following command:
   ```
   scoop install ffmpeg git
   ```
@@ -100,12 +105,13 @@ This section tells how to make it work. In more detailed way.
 
   Now chop the video by running this command:
   ```
-  ffmpeg -i "video.mkv" -r 2 -q:v 3 frame_%00d.jpg
+  ffmpeg -i "video.mkv" -vf "fps=2" -vsync vfr -q:v 3 frame_%00d.jpg
   ```
-  - `-i "video.mkv"` input file
-  - `-r 2` is the frames chopped per second <sup>(needed in `config.conf`)</sup>
-  - `-q:v 3` quality
-  - `frame_%00d.jpg` output file
+  - `-i "video.mkv"` Specifies the input video file
+  - `-vf "fps=2"` is the frames chopped per second <sup>(needed in `config.conf`)</sup>
+  - `-vsync vfr` Ensures variable frame rate is used to match the input video
+  - `-q:v 3` Defines the output image quality (lower numbers mean higher quality)
+  - `frame_%00d.jpg` Specifies the output file naming pattern (e.g., frame_001.jpg, frame_002.jpg)
   
   Wait until it finished...
 
