@@ -58,6 +58,12 @@ jobs:
       - name: "checkout"
         uses: actions/checkout@v4
 
+      - name: "initialize package"
+        run: |
+          sudo apt update -y
+          sudo apt upgrade -y
+          sudo apt install imagemagick -y
+
       - name: "run"
         continue-on-error: true
         env:
