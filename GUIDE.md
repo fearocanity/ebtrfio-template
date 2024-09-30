@@ -117,7 +117,8 @@
   > > ```
   
   Create your own clone of the repository. And click `Create a new Repository`, You will be redirected to create the name of your repository. And the steps of creating one should be self-explanatory.
-  ![Screenshot](image)
+  
+  ![Screenshot](https://github.com/user-attachments/assets/f82380ed-f84c-43e8-b803-5efbeac2f726)
   
   Then now we're gonna upload the frames to GitHub.
   Open your `Windows Powershell` and Run the Command below:
