@@ -27,7 +27,7 @@ jobs:
         run: |
           if [ "${{ github.event.workflow_run.conclusion }}" != "success" ]; then
               printf '%s\n' "Exiting... The init banner did not succeed..." >&2
-              exit 1
+              curl -X POST -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/cancel"
           fi
 
       - name: "check latest || (not implemented) dispatches if fails"
@@ -38,7 +38,7 @@ jobs:
           if [ "${LATEST_COMMIT}" != "${GITHUB_SHA}" ]; then
              printf '%s\n' "Current commit is not the latest." >&2
              # curl -H "Authorization: Bearer ${GITHUB_TOKEN}" -H "Accept: application/vnd.github.v3+json" -X POST -d '{"ref":"'"${{ github.ref }}"'","inputs":{}}' "https://api.github.com/repos/${{ github.repository }}/actions/workflows/process.yml/dispatches"
-            exit 1
+             curl -X POST -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/cancel"
           fi
        
       - name: "check if repo checker have succeed"
@@ -49,7 +49,7 @@ jobs:
           if [[ "${conclusion}" = "failure" ]]; then
               printf '%s\n' "failed due to repo checker failure." >&2
               curl -H "Authorization: Bearer ${GITHUB_TOKEN}" -H "Accept: application/vnd.github.v3+json" -X POST -d '{"ref":"'"${{ github.ref }}"'","inputs":{}}' "https://api.github.com/repos/${{ github.repository }}/actions/workflows/repo-checker.yml/dispatches" -o /dev/null
-              exit 1
+              curl -X POST -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/cancel"
           fi
 
   sample-bot:
