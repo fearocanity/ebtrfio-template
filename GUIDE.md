@@ -53,9 +53,11 @@
 
   ---
 
-  ### Setup the Frames
+ ### Setup the Frames
   <details>
   <summary>Click Here to Show</summary><p>
+
+  ><sup>tip</sup> You can use a graphical interface to extract frames, [Frame Chopper](https://github.com/JavaRaf/Frame-Chopper) or follow the steps below.
 
   You need to use Windows PowerShell to install and use `FFMPEG`
 
@@ -94,13 +96,13 @@
 
   Now chop the video by running this command:
   ```
-  ffmpeg -i "video.mkv" -vf "fps=2" -vsync vfr -q:v 3 frame_%00d.jpg
+  ffmpeg -i "video.mkv" -vf "fps=2" -fps_mode vfr -q:v 3 frame_%00d.jpg
   ```
   - `-i "video.mkv"` Specifies the input video file
   - `-vf "fps=2"` is the frames chopped per second <sup>(needed in `config.conf`)</sup>
-  - `-vsync vfr` Ensures variable frame rate is used to match the input video
+  - `-fps_mode vfr` Ensures variable frame rate is used to match the input video
   - `-q:v 3` Defines the output image quality (lower numbers mean higher quality)
-  - `frame_%00d.jpg` Specifies the output file naming pattern (e.g., frame_001.jpg, frame_002.jpg)
+  - `frame_%00d.jpg` Specifies the output file naming pattern (e.g., frame_1.jpg, frame_2.jpg)
   
   Wait until it finished...
 
