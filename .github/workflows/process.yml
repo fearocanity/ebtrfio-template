@@ -6,6 +6,10 @@ on:
      # You can change this CRON syntax to customize execute interval
      - cron: "0 */2 * * *"
 
+permissions:
+  contents: read
+  pull-requests: write
+  
 jobs:
  checks:
     runs-on: ubuntu-latest
