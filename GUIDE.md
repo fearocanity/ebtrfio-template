@@ -182,13 +182,7 @@
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221394973-d17f410b-f12a-47c4-bde2-6cb62f002f15.png)
     - (Optional) You can add the GIF token too by creating again, and it is named `TOK_GIF`<p>
   
-  - Go to `Settings` again, Under `Actions`, click `General`<p>
-  ![???](https://user-images.githubusercontent.com/91414643/221912286-c5e82432-a320-41bb-a516-c0856e35b25d.jpg)
-  - Click `Read and Write Permission` and `save` it.<p>
-  ![???](https://user-images.githubusercontent.com/91414643/221912865-4d638bde-d221-4d94-aaef-1e64b8988a2b.jpg)
   
-  - Then you're good to go for a test now. You're Done!!
-    
   </details>
   
   ---
