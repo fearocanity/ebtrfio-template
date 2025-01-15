@@ -215,7 +215,7 @@
   
   - Click on `Actions`<p>
   ![image](https://user-images.githubusercontent.com/91414643/221397334-bc392a43-4957-48d7-b001-abb1f9e0ba36.png)
-  - Click on `init banner`, And click `Run Workflow`<p>
+  - Click on `Trigger`, And click `Run Workflow`<p>
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221397447-13ec2f97-6830-4600-87a1-390f7f473d5b.png)
   
    > We prefer not doing this *(The BOT is already running)*, because it will cause to run the workflow twice when the automatic run was executed. it'll cause duplication. Instead do [Manually Disable Workflow](#how-to-manually-enabledisable-the-posting). Make sure you know what you're doing. *(This is helpful if you want to run the posting after you enable the workflow)*
@@ -230,7 +230,7 @@
   
   - Click on `Actions`<p>
   ![image](https://user-images.githubusercontent.com/91414643/221397334-bc392a43-4957-48d7-b001-abb1f9e0ba36.png)
-  - Click on `init banner`, and click the three dots `···`. Then finally, click on `Disable Workflow`<p>
+  - Click on `Trigger`, and click the three dots `···`. Then finally, click on `Disable Workflow`<p>
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221398101-a13b6416-dbb9-4cfa-bb34-3a95b330f210.png)
     
   > Enabling it pretty much the same procedure, It will appear the enable button at the top.
