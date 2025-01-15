@@ -60,7 +60,7 @@ post_subs(){
 
 post_changedesc(){
 	ovr_all="$(sed -E ':L;s=\b([0-9]+)([0-9]{3})\b=\1,\2=g;t L' counter_total_frames.txt)"
-	get_interval="$(sed -nE 's|posting_interval="([0-9]+)"|\1|p' ./config.conf)"
+	get_interval="$(sed -nE 's|.*posting_interval="([0-9]+)".*|\1|p' ./config.conf)"
 	TEMP_ABT_TXT="$(eval "printf '%s' \"$(sed -E 's_\{\\n\}_\n_g;s_\{([^\x7d]*)\}_\${\1:-??}_g;s|ovr_all:-\?\?|ovr_all:-0|g' <<< "${abt_txt}"\")")"
 	curl -sLk -X POST "${FRMENV_API_ORIGIN}/me/?access_token=${1}" --data-urlencode "about=${TEMP_ABT_TXT}" -o /dev/null || true
 	unset TEMP_ABT_TXT 
