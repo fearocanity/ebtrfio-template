@@ -18,7 +18,9 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GIT_TOK }}
         
     - name: delay
-      run: sleep "$(sed -nE 's|posting_interval="([0-9]+)"|\1|p' ./config.conf)"
+      run: |
+        post_int="$(sed -nE 's|posting_interval="([0-9]+)"|\1|p' ./config.conf)"
+        sleep "$(( 3600 * ${post_int:-1} ))"
       
     - name: next
       run: |
