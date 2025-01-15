@@ -19,7 +19,7 @@ jobs:
         
     - name: delay
       run: |
-        post_int="$(sed -nE 's|posting_interval="([0-9]+)"|\1|p' ./config.conf)"
+        post_int="$(sed -nE 's|.*posting_interval="([0-9]+)".*|\1|p' ./config.conf)"
         sleep "$(( 3600 * ${post_int:-1} ))"
       
     - name: next
