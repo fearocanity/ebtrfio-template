@@ -1,0 +1,27 @@
+name: Trigger
+
+on:
+  workflow_dispatch:
+
+jobs:
+  trigger:
+    runs-on: ubuntu-24.04
+    
+    steps:
+    - name: "checkout"
+      uses: actions/checkout@v4
+    
+    - name: execute
+      run: |
+        gh workflow run process.yml --repo ${{ github.repository }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GIT_TOK }}
+        
+    - name: delay
+      run: sleep "$(sed -nE 's|posting_interval="([0-9]+)"|\1|p' ./config.conf)"
+      
+    - name: next
+      run: |
+        gh workflow run trigger.yml --repo ${{ github.repository }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GIT_TOK }}
