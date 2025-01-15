@@ -182,6 +182,7 @@
   ![Screenshot](https://user-images.githubusercontent.com/91414643/221394973-d17f410b-f12a-47c4-bde2-6cb62f002f15.png)
     - (Optional) You can add the GIF token too by creating again, and it is named `TOK_GIF`<p>
   
+  - Add also your GitHub token on Repository Secrets named `GIT_TOK`
   
   </details>
   
