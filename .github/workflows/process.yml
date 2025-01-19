@@ -8,7 +8,7 @@ permissions:
 
 jobs:
  checks:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: "ownership check"
         env:
@@ -37,7 +37,7 @@ jobs:
 
       - name: "check status"
         run: |
-          if [ "$(<./fb/frameiterator)" -gt "$(sed -nE 's/.*total_frame="([^"]*)".*/\1/p' config.conf)" ]; then
+          if [[ "$(<./fb/frameiterator)" -gt "$(sed -nE 's/.*total_frame="([^"]*)".*/\1/p' config.conf)" ]]; then
              echo -e '> [!NOTE]'"\n> The Bot was Finished Running" >> "${GITHUB_STEP_SUMMARY}"
              gh workflow disable trigger.yml --repo ${{ github.repository }}
           fi
@@ -46,6 +46,7 @@ jobs:
 
       - name: "initialize package"
         run: |
+          (echo "set man-db/auto-update false" | sudo debconf-communicate; sudo dpkg-reconfigure man-db) &>/dev/null
           sudo apt install imagemagick -y
 
       - name: "execute"
