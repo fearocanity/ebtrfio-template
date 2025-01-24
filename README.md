@@ -8,10 +8,14 @@
 </div>
 
 ## Table of Contents
+ - [Status](#status)
  - [Tutorial](#tutorial)
  - [Notes and Tips](#notes-and-tips)
  - [Contributing](#contributing)
- - [Status](#status)
+
+
+## Status
+![Status Image](status/status.png)
 
   ## Tutorial
   The tutorial is moved on [GUIDE.md](GUIDE.md).
@@ -42,6 +46,3 @@
 ```
 If you have ideas or fixes to the bugs and also improving the codes, Feel free to [Contribute](./CONTRIBUTING.md)! 😉
 </div>
-
-## Status
-![Status Image](status/status.png)

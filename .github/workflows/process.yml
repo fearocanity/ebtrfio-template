@@ -2,17 +2,13 @@
 name: "init banner"
 on:
    workflow_dispatch:
-   schedule:
-     # You can change this CRON syntax to customize execute interval
-     - cron: "0 */2 * * *"
 
 permissions:
   contents: write
-  pull-requests: write
 
 jobs:
  checks:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: "ownership check"
         env:
@@ -22,7 +18,7 @@ jobs:
           case "${trig_actor}" in
             "${repo_ownr}"|github-actions*) : ;;
             *) printf '%s\n'"Runner prevented to run because the script is executed by an untrusted user \"${trig_actor}\". (Only owner can execute, for security)" >&2
-               curl -X POST -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/cancel" ;;
+               exit 1 ;;
           esac
 
       - name: "chk wf status"
@@ -32,27 +28,25 @@ jobs:
           status="$(echo "${response}" | jq -r '.workflow_runs[].status')"
           if grep -qE 'in_progress' <<< "${status}"; then
             echo -e '> [!CAUTION]'"\n> The bot_runner is still running, The script prevented this workflow to run to avoid conflicts... Cancelling"'!!' >> "${GITHUB_STEP_SUMMARY}"
-            # Cancel Job
-            curl -X POST -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/cancel"
+            exit 1
           fi
           : "Ignore"
 
- inits:
-    runs-on: ubuntu-latest
-    if: success() && true
-    steps:
       - name: "checkout"
         uses: actions/checkout@v4
 
       - name: "check status"
         run: |
-          if [ "$(<./fb/frameiterator)" -gt "$(sed -nE 's/.*total_frame="([^"]*)".*/\1/p' config.conf)" ]; then
+          if [[ "$(<./fb/frameiterator)" -gt "$(sed -nE 's/.*total_frame="([^"]*)".*/\1/p' config.conf)" ]]; then
              echo -e '> [!NOTE]'"\n> The Bot was Finished Running" >> "${GITHUB_STEP_SUMMARY}"
-             curl -X POST -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/cancel"
+             gh workflow disable trigger.yml --repo ${{ github.repository }}
           fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GIT_TOK }}
 
       - name: "initialize package"
         run: |
+          (echo "set man-db/auto-update false" | sudo debconf-communicate; sudo dpkg-reconfigure man-db) &>/dev/null
           sudo apt install imagemagick -y
 
       - name: "execute"

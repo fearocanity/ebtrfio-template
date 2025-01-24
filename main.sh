@@ -55,7 +55,7 @@ helper_depcheck awk sed grep curl bc jq || failed 1
 [[ -e "${FRMENV_ITER_FILE}" ]] || printf '%s' "1" > "${FRMENV_ITER_FILE}"
 { [[ -z "$(<"${FRMENV_ITER_FILE}")" ]] || [[ "$(<"${FRMENV_ITER_FILE}")" -lt 1 ]] ;} && printf '%s' "1" > "${FRMENV_ITER_FILE}"
 
-[[ "${total_frame}" -lt "$(<"${FRMENV_ITER_FILE}")" ]] && exit 0
+[[ "${total_frame}" -lt "$(<"${FRMENV_ITER_FILE}")" ]] && exit 12
 
 # Get the previous frame from a file that acts like an iterator
 prev_frame="$(<"${FRMENV_ITER_FILE}")"
