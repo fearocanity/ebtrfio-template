@@ -55,6 +55,7 @@ jobs:
 
       - name: "initialize package"
         run: |
+          (echo "set man-db/auto-update false" | sudo debconf-communicate; sudo dpkg-reconfigure man-db) &>/dev/null
           sudo apt install imagemagick -y
 
       - name: "execute"

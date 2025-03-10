@@ -63,7 +63,7 @@ jobs:
 
       - name: "frameiterator check"
         run: |
-          if [[ "$(<./fb/frameiterator)" -ge "$(sed -nE 's|.*total_frame="([^"]*)".*|\1|g' config.conf)" ]]; then
+          if [[ "$(<./fb/frameiterator)" -gt "$(sed -nE 's/.*total_frame="([^"]*)".*/\1/p' config.conf)" ]]; then
               printf '%s\n' "trigger.yml disabled, because the posting is finished" >&2
               gh run cancel "${{ github.run_id }}" --repo "${{ github.repository }}"
           fi
@@ -72,6 +72,7 @@ jobs:
 
       - name: "initialize package"
         run: |
+          (echo "set man-db/auto-update false" | sudo debconf-communicate; sudo dpkg-reconfigure man-db) &>/dev/null
           sudo apt install imagemagick bc -y
 
       - name: "run"
