@@ -244,10 +244,7 @@
   <details>
   <summary>Click Here to Show</summary><p>
 
-  - Firstly, go to `.github/workflows/process.yml`
-  ![Screenshot](https://github.com/fearocanity/ebtrfio-template/assets/91414643/77fd6f00-c350-4a68-bfdc-40ff8d3c8658)
-
-  - And change the cron syntax `0 */2 * * *`, this cron syntax stands for `every 2 hrs`, so you can just change the `2` based on your likings. Or you can make your own cron [here](https://crontab.guru/).
+  - You can change it on `config.conf`
 
   > <sub><img src="https://upload.wikimedia.org/wikipedia/commons/6/61/ANSI_Caution_Header_-_1998.svg" height="16" style="border-radius: 12%"></sub>: 
   > Make sure you know what you're doing, This might cause duplications and errors on posting. And before you adjust it, make sure the product of `fph` and `mins` mustn't exceed to the number of hours you set on cron.
