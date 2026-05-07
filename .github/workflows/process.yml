@@ -41,7 +41,7 @@ jobs:
     if: success() && true
     steps:
       - name: "checkout"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: "check status"
         env:
